@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>💘 Valentine Game</title>
+  <title>💘 Valentine Quest (3 Rooms)</title>
 
   <!-- Fonts: Intel One Mono + Ubuntu -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,10 +25,10 @@
       --ui:#141127;
       --ui2:#1b1635;
 
-      --panel:#ffbfd6;   /* card interior */
+      --panel:#ffbfd6;
       --panel2:#ff9fc6;
 
-      --px: 4px;         /* pixel scale for borders */
+      --px: 4px;
       --radius: 18px;
       --shadow: 0 20px 70px rgba(0,0,0,.55);
     }
@@ -47,7 +47,7 @@
       font-family: "Ubuntu", system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
 
-    /* ===== CRT overlay ===== */
+    /* CRT overlay */
     .crt{
       position:fixed; inset:0;
       pointer-events:none;
@@ -72,7 +72,7 @@
       filter: blur(18px);
     }
 
-    /* ===== floating hearts layer ===== */
+    /* floating hearts layer */
     .float-layer{
       position:fixed; inset:0;
       pointer-events:none;
@@ -94,7 +94,7 @@
       100%{ transform: translate3d(0, -120vh, 0) scale(1.25); opacity:0; }
     }
 
-    /* ===== main layout ===== */
+    /* main layout */
     .wrap{
       position:relative;
       height:100%;
@@ -104,7 +104,7 @@
       z-index:5;
     }
 
-    /* ===== pixel UI frame (SEGA vibe) ===== */
+    /* pixel UI frame */
     .frame{
       width:min(980px, 96vw);
       min-height:min(560px, 80vh);
@@ -113,12 +113,9 @@
       box-shadow: var(--shadow);
       position:relative;
       overflow:hidden;
-
-      /* pixel border illusion */
       outline: calc(var(--px)*2) solid rgba(0,255,213,.22);
       outline-offset: -10px;
     }
-
     .frame::before{
       content:"";
       position:absolute; inset:0;
@@ -129,7 +126,6 @@
       opacity:.9;
     }
 
-    /* top HUD bar */
     .hud{
       position:relative;
       z-index:1;
@@ -176,6 +172,7 @@
       display:flex;
       gap:8px;
       align-items:center;
+      user-select:none;
     }
     .pill b{ color: var(--neon4); font-weight:800; }
     .pill .dot{
@@ -185,7 +182,6 @@
       box-shadow: 0 0 18px rgba(255,42,109,.35);
     }
 
-    /* ===== screen area ===== */
     .screen{
       position:relative;
       z-index:1;
@@ -205,8 +201,6 @@
       position:relative;
       border: 1px solid rgba(255,255,255,.35);
     }
-
-    /* pixel corner accents */
     .panel::after{
       content:"";
       position:absolute; inset:0;
@@ -216,30 +210,42 @@
       pointer-events:none;
     }
 
+    /* LEFT panel content */
     .left{
       padding:22px 22px 18px;
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:10px;
     }
-
     h1{
       margin:0;
       font-family:"Intel One Mono", ui-monospace, monospace;
       font-weight: 900;
-      font-size: clamp(26px, 3.2vw, 50px);
+      font-size: clamp(22px, 2.6vw, 44px);
       line-height:1.05;
       letter-spacing:-.6px;
       text-transform: uppercase;
     }
-
     .sub{
       margin:0;
       font-size: clamp(14px, 1.55vw, 18px);
       line-height:1.55;
-      opacity:.85;
+      opacity:.86;
       min-height: 3.6em;
     }
+    .objective{
+      margin:6px 0 0;
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing:.35px;
+      background: rgba(255,255,255,.70);
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding:10px 12px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.12);
+    }
+    .objective b{ color: var(--neon2); }
 
     .actions{
       margin-top:6px;
@@ -248,7 +254,6 @@
       flex-wrap:wrap;
       align-items:center;
     }
-
     .btn{
       appearance:none;
       border:0;
@@ -259,13 +264,14 @@
       letter-spacing:.4px;
       font-family:"Intel One Mono", ui-monospace, monospace;
       text-transform: uppercase;
-      transition: transform .08s ease, filter .2s ease, box-shadow .2s ease;
+      transition: transform .08s ease, filter .2s ease, box-shadow .2s ease, opacity .2s ease;
       user-select:none;
       display:inline-flex;
       align-items:center;
       gap:10px;
     }
     .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn[disabled]{ opacity:.55; cursor:not-allowed; }
 
     .btn-primary{
       color:white;
@@ -273,7 +279,6 @@
       box-shadow: 0 16px 34px rgba(255,42,109,.32);
     }
     .btn-primary:hover{ filter: brightness(1.03); }
-
     .btn-ghost{
       background: rgba(255,255,255,.70);
       color: var(--ink);
@@ -300,17 +305,11 @@
       font-weight:900;
     }
 
-    /* ===== right side: Bubu & Dudu (NOT sega style) ===== */
-    .right{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .charbox{
-      display:grid;
-      place-items:center;
-      padding:12px;
-    }
+    /* RIGHT side */
+    .right{ display:flex; flex-direction:column; gap:12px; }
+
+    /* Bubu & Dudu (NOT Sega style) */
+    .charbox{ display:grid; place-items:center; padding:12px; }
     .characters{
       width:100%;
       max-width: 360px;
@@ -325,7 +324,7 @@
     .characters .bubble{
       position:absolute;
       left:12px; top:12px;
-      background: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.78);
       border: 1px solid rgba(0,0,0,.08);
       padding:8px 10px;
       border-radius: 14px;
@@ -333,6 +332,7 @@
       font-weight:700;
       color: var(--ink);
       font-size: 13px;
+      user-select:none;
     }
     .characters .bubble b{
       font-family:"Intel One Mono", ui-monospace, monospace;
@@ -340,41 +340,74 @@
       letter-spacing:.3px;
     }
 
-    /* little floating hearts above them */
-    .top-hearts{
-      position:absolute;
-      left:50%;
-      top:16px;
-      transform: translateX(-50%);
-      display:flex; gap:10px;
-      pointer-events:none;
-      opacity:.95;
+    /* Room 2: letter tiles */
+    .tiles{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:10px;
+      padding:12px 14px 14px;
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
     }
-    .ph{
-      width:14px; height:14px;
-      transform: rotate(45deg);
-      background: rgba(255,42,109,.85);
-      border-radius: 3px;
-      position:relative;
-      animation: pop 1.6s ease-in-out infinite;
+    .tile{
+      height:46px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing:.2px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.10);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .08s ease, opacity .2s ease, filter .2s ease;
     }
-    .ph::before,.ph::after{
-      content:"";
-      position:absolute;
-      width:14px; height:14px;
-      border-radius: 999px;
-      background: inherit;
-    }
-    .ph::before{ left:-7px; top:0; }
-    .ph::after{ left:0; top:-7px; }
-    .ph:nth-child(2){ animation-delay:.25s; opacity:.75; transform: rotate(45deg) scale(.92); }
-    .ph:nth-child(3){ animation-delay:.5s; opacity:.65; transform: rotate(45deg) scale(.85); }
-    @keyframes pop{
-      0%,100%{ transform: translateY(0) rotate(45deg) scale(1); }
-      50%{ transform: translateY(-8px) rotate(45deg) scale(1.08); }
-    }
+    .tile:active{ transform: translateY(1px) scale(.99); }
+    .tile.used{ opacity:.35; cursor:not-allowed; }
+    .tile.good{ filter: brightness(1.02); }
+    .tile.bad{ filter: grayscale(.35) brightness(.95); }
 
-    /* ===== mini game HUD ===== */
+    .phrase{
+      padding:12px 14px;
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing:.25px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color: var(--ink);
+    }
+    .phrase span{ opacity:.9; }
+    .phrase b{ color: var(--neon2); }
+
+    /* Mini-game: catch button floats */
+    .catch{
+      width: 62px;
+      height: 62px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 14px 30px rgba(0,0,0,.14);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease;
+      z-index: 20;
+    }
+    .catch:active{ transform: scale(.98); }
+    .catch span{ font-size: 26px; }
+
     .gamebar{
       display:flex;
       gap:10px;
@@ -389,6 +422,7 @@
       color: var(--ink);
       font-family:"Intel One Mono", ui-monospace, monospace;
       font-weight:900;
+      user-select:none;
     }
     .gamebar .score{
       display:flex;
@@ -397,24 +431,7 @@
     }
     .gamebar .score b{ color: var(--neon2); }
 
-    /* catch heart button floats around */
-    .catch{
-      width: 62px;
-      height: 62px;
-      border-radius: 14px;
-      display:grid;
-      place-items:center;
-      background: rgba(255,255,255,.72);
-      border: 1px solid rgba(0,0,0,.10);
-      box-shadow: 0 14px 30px rgba(0,0,0,.14);
-      cursor:pointer;
-      user-select:none;
-      transition: transform .12s ease;
-    }
-    .catch:active{ transform: scale(.98); }
-    .catch span{ font-size: 26px; }
-
-    /* ===== modal ===== */
+    /* modal */
     .modal-backdrop{
       position:fixed; inset:0;
       background: rgba(0,0,0,.62);
@@ -474,7 +491,6 @@
     }
     .letter p{ margin:0 0 10px; }
     .letter p:last-child{ margin-bottom:0; }
-
     .qa{
       margin-top:12px;
       display:flex;
@@ -494,7 +510,7 @@
       position:relative;
     }
 
-    /* ===== toast ===== */
+    /* toast */
     .toast{
       position:fixed;
       left:50%;
@@ -514,13 +530,14 @@
       align-items:center;
       text-transform: uppercase;
       letter-spacing:.35px;
+      user-select:none;
     }
 
-    /* responsive */
     @media (max-width: 860px){
       .screen{ grid-template-columns: 1fr; }
       .frame{ min-height: unset; }
       .characters{ max-width: 420px; }
+      .tiles{ grid-template-columns: repeat(5, 1fr); }
     }
   </style>
 </head>
@@ -529,6 +546,9 @@
   <div class="float-layer" id="floatLayer"></div>
   <div class="vignette"></div>
   <div class="crt"></div>
+
+  <!-- Optional background music (put your own file with rights): assets/bg.mp3 -->
+  <audio id="bgm" src="assets/bg.mp3" preload="auto" loop></audio>
 
   <main class="wrap">
     <section class="frame" id="frame">
@@ -540,20 +560,22 @@
         </div>
 
         <div class="hud-right">
-          <div class="pill"><span class="dot"></span> MODE: <b>LOVE</b></div>
+          <div class="pill"><span class="dot"></span> ROOM: <b id="roomLabel">1/3</b></div>
           <div class="pill">PRESS <b>SPACE</b> = CONFETTI</div>
           <div class="pill">PRESS <b>H</b> = HEARTS</div>
         </div>
       </div>
 
       <div class="screen">
-        <!-- LEFT: text + controls (SEGA UI style) -->
+        <!-- LEFT -->
         <div class="panel left">
-          <h1 id="headline">HAPPY VALENTINE DAY, MY MAN 💘</h1>
+          <h1 id="headline">ROOM 1: CATCH 💘</h1>
           <p class="sub" id="typed"></p>
 
+          <div class="objective" id="objective"></div>
+
           <div class="actions">
-            <button class="btn btn-primary" id="openGifts">🎁 OPEN GIFTS</button>
+            <button class="btn btn-primary" id="nextRoom" disabled>➡ NEXT ROOM</button>
             <button class="btn btn-ghost" id="toggleHearts">💖 HEARTS: NORMAL</button>
             <button class="btn btn-ghost" id="toggleSound" aria-pressed="false">🔈 SOUND: OFF</button>
           </div>
@@ -565,19 +587,14 @@
           </div>
         </div>
 
-        <!-- RIGHT: Bubu & Dudu (drawn) + mini game -->
+        <!-- RIGHT -->
         <div class="right">
           <div class="panel charbox">
             <div class="characters">
               <div class="bubble"><b>BUBU</b> + <b>DUDU</b> = ❤️</div>
 
-              <div class="top-hearts">
-                <i class="ph"></i><i class="ph"></i><i class="ph"></i>
-              </div>
-
-              <!-- BUBU & DUDU SVG (cute, not SEGA) -->
+              <!-- BUBU & DUDU SVG -->
               <svg viewBox="0 0 400 400" width="100%" height="100%" aria-label="Bubu and Dudu">
-                <!-- background blush -->
                 <defs>
                   <radialGradient id="bg" cx="50%" cy="40%" r="70%">
                     <stop offset="0%" stop-color="#ffffff" stop-opacity=".75"/>
@@ -588,87 +605,62 @@
                   </filter>
                 </defs>
                 <rect x="0" y="0" width="400" height="400" rx="24" fill="url(#bg)"/>
-
-                <!-- little hearts -->
                 <g opacity=".9">
                   <text x="230" y="90" font-size="22">💗</text>
                   <text x="260" y="70" font-size="18">💖</text>
                   <text x="205" y="65" font-size="16">💘</text>
                 </g>
 
-                <!-- Dudu (white) -->
+                <!-- Dudu -->
                 <g filter="url(#softShadow)">
-                  <!-- head -->
                   <circle cx="250" cy="180" r="78" fill="#ffffff" stroke="#2c2032" stroke-opacity=".08" stroke-width="3"/>
-                  <!-- ears -->
                   <circle cx="200" cy="120" r="22" fill="#ffffff" stroke="#2c2032" stroke-opacity=".08" stroke-width="3"/>
                   <circle cx="300" cy="120" r="22" fill="#ffffff" stroke="#2c2032" stroke-opacity=".08" stroke-width="3"/>
                   <circle cx="200" cy="120" r="11" fill="#2c2032" opacity=".10"/>
                   <circle cx="300" cy="120" r="11" fill="#2c2032" opacity=".10"/>
-                  <!-- face -->
                   <circle cx="230" cy="175" r="6" fill="#1a1020"/>
                   <circle cx="270" cy="175" r="6" fill="#1a1020"/>
                   <path d="M245 190 q5 8 10 0" stroke="#1a1020" stroke-width="4" fill="none" stroke-linecap="round"/>
-                  <!-- blush -->
                   <ellipse cx="215" cy="200" rx="18" ry="10" fill="#ff2a6d" opacity=".18"/>
                   <ellipse cx="285" cy="200" rx="18" ry="10" fill="#ff2a6d" opacity=".18"/>
-                  <!-- body -->
-                  <path d="M205 245
-                           q45 -20 90 0
-                           q25 55 -10 100
-                           q-35 30 -70 0
-                           q-35 -45 -10 -100 z"
+                  <path d="M205 245 q45 -20 90 0 q25 55 -10 100 q-35 30 -70 0 q-35 -45 -10 -100 z"
                         fill="#ffffff" stroke="#2c2032" stroke-opacity=".06" stroke-width="3"/>
                 </g>
 
-                <!-- Bubu (brown) hugging -->
+                <!-- Bubu -->
                 <g filter="url(#softShadow)">
-                  <!-- head -->
                   <circle cx="160" cy="205" r="74" fill="#c28a6f" stroke="#1a1020" stroke-opacity=".10" stroke-width="3"/>
-                  <!-- ears -->
                   <circle cx="115" cy="150" r="22" fill="#c28a6f" stroke="#1a1020" stroke-opacity=".10" stroke-width="3"/>
                   <circle cx="205" cy="150" r="22" fill="#c28a6f" stroke="#1a1020" stroke-opacity=".10" stroke-width="3"/>
                   <circle cx="115" cy="150" r="11" fill="#1a1020" opacity=".10"/>
                   <circle cx="205" cy="150" r="11" fill="#1a1020" opacity=".10"/>
-                  <!-- face -->
                   <circle cx="140" cy="205" r="6" fill="#1a1020"/>
                   <circle cx="180" cy="205" r="6" fill="#1a1020"/>
                   <path d="M155 220 q5 8 10 0" stroke="#1a1020" stroke-width="4" fill="none" stroke-linecap="round"/>
-                  <!-- blush -->
                   <ellipse cx="125" cy="235" rx="18" ry="10" fill="#ff2a6d" opacity=".16"/>
                   <ellipse cx="195" cy="235" rx="18" ry="10" fill="#ff2a6d" opacity=".16"/>
-                  <!-- body -->
-                  <path d="M115 270
-                           q45 -25 90 0
-                           q30 55 -5 95
-                           q-35 32 -75 0
-                           q-35 -45 -10 -95 z"
+                  <path d="M115 270 q45 -25 90 0 q30 55 -5 95 q-35 32 -75 0 q-35 -45 -10 -95 z"
                         fill="#c28a6f" stroke="#1a1020" stroke-opacity=".06" stroke-width="3"/>
-                  <!-- arms hug -->
-                  <path d="M185 288
-                           q55 10 70 50
-                           q-12 12 -28 8
-                           q-18 -26 -55 -30 z"
-                        fill="#c28a6f" opacity=".98"/>
-                  <path d="M210 295
-                           q35 12 45 35
-                           q-10 10 -22 6
-                           q-12 -18 -33 -22 z"
-                        fill="#c28a6f" opacity=".98"/>
+                  <path d="M185 288 q55 10 70 50 q-12 12 -28 8 q-18 -26 -55 -30 z" fill="#c28a6f" opacity=".98"/>
+                  <path d="M210 295 q35 12 45 35 q-10 10 -22 6 q-12 -18 -33 -22 z" fill="#c28a6f" opacity=".98"/>
                 </g>
 
-                <!-- ground -->
                 <ellipse cx="205" cy="370" rx="150" ry="20" fill="#1a1020" opacity=".08"/>
               </svg>
             </div>
           </div>
 
-          <div class="gamebar">
-            <div class="score">🧡 SCORE: <b id="score">0</b></div>
-            <div>CLICK 💘 TO CATCH</div>
-          </div>
+          <div class="gamebar" id="rightHud"></div>
 
-          <button class="catch" id="catchBtn" title="Поймай сердечко!">
+          <!-- Room 2 UI -->
+          <div class="phrase" id="phraseBox" style="display:none;">
+            <span>PHRASE:</span>
+            <b id="phraseProgress">______</b>
+          </div>
+          <div class="tiles" id="tiles" style="display:none;"></div>
+
+          <!-- Catch button (room 1) -->
+          <button class="catch" id="catchBtn" title="Поймай сердечко!" style="display:none;">
             <span>💘</span>
           </button>
         </div>
@@ -676,7 +668,7 @@
     </section>
   </main>
 
-  <!-- MODAL -->
+  <!-- MODAL (Room 3 final) -->
   <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
       <header>
@@ -696,7 +688,7 @@
             И да, я выбираю тебя. ❤️
           </p>
           <p style="opacity:.75;margin-top:10px">
-            P.S. Поймай несколько сердец — откроется сюрприз.
+            P.S. Ты прошёл все комнаты. Теперь только один вопрос.
           </p>
         </div>
 
@@ -712,34 +704,60 @@
 
   <script>
     // =======================
-    //   TEXT (female -> boyfriend)
+    //   GAME CONFIG (female -> boyfriend)
     // =======================
-    const CONFIG = {
-      headline: "HAPPY VALENTINE DAY, MY MAN 💘",
-      typedText:
-        "С тобой я чувствую себя спокойно и по-настоящему любимой. " +
-        "Ты — моя опора, мой мужчина и мой самый тёплый выбор. " +
-        "Нажми «OPEN GIFTS» — и не делай вид, что ты не улыбаешься 😌",
-      unlockScore: 7, // hearts to unlock surprise
+    const GAME = {
+      room: 1,
+      roomsTotal: 3,
+
+      room1Target: 7, // catch hearts
+      room2Phrase: "MY MAN", // phrase to collect (letters only, spaces auto)
+      // Text per room
+      roomText: {
+        1: "ROOM 1. Я спрятала любовь в сердечках. Поймай их, и мы откроем следующую комнату 😌",
+        2: "ROOM 2. Собери фразу. Да, я говорю это вслух: ты — мой мужчина. Нажимай по буквам.",
+        3: "ROOM 3. Финал. Никаких игр (ну почти). Нажми OPEN LETTER — и отвечай честно ❤️",
+      }
     };
 
     // ====== Helpers ======
     const $ = (sel, el=document) => el.querySelector(sel);
     const rand = (a,b)=>Math.random()*(b-a)+a;
 
-    // ====== Apply headline + typing effect ======
+    // ====== UI refs ======
+    const roomLabel = $("#roomLabel");
     const headlineEl = $("#headline");
     const typedEl = $("#typed");
-    headlineEl.textContent = CONFIG.headline;
+    const objectiveEl = $("#objective");
+    const nextRoomBtn = $("#nextRoom");
+    const rightHud = $("#rightHud");
 
-    let ti = 0;
-    function typeTick(){
-      const s = CONFIG.typedText;
-      typedEl.textContent = s.slice(0, ti);
-      ti = Math.min(s.length, ti + 2);
-      if(ti < s.length) requestAnimationFrame(typeTick);
+    const catchBtn = $("#catchBtn");
+    const scoreSpan = document.createElement("b");
+
+    const phraseBox = $("#phraseBox");
+    const phraseProgress = $("#phraseProgress");
+    const tilesEl = $("#tiles");
+
+    // modal
+    const backdrop = $("#backdrop");
+    const closeModalBtn = $("#closeModal");
+    const yesBtn = $("#yesBtn");
+    const noBtn = $("#noBtn");
+
+    // ====== Typing effect ======
+    let typeRAF = null;
+    function typeText(text){
+      if(typeRAF) cancelAnimationFrame(typeRAF);
+      typedEl.textContent = "";
+      let i=0;
+      const tick = ()=>{
+        typedEl.textContent = text.slice(0, i);
+        i = Math.min(text.length, i + 2);
+        if(i < text.length) typeRAF = requestAnimationFrame(tick);
+      };
+      tick();
     }
-    typeTick();
 
     // ====== Floating hearts ======
     const layer = $("#floatLayer");
@@ -779,16 +797,8 @@
     }
     startHearts();
 
-    const toggleHeartsBtn = $("#toggleHearts");
-    toggleHeartsBtn.addEventListener("click", ()=>{
-      heartsBoost = !heartsBoost;
-      toggleHeartsBtn.textContent = heartsBoost ? "💖 HEARTS: MAX" : "💖 HEARTS: NORMAL";
-      toast(heartsBoost ? "HEARTS MAX" : "HEARTS NORMAL");
-      stopHearts(); startHearts();
-    });
-
     // ====== Confetti (pure JS canvas) ======
-    function confettiBurst(count=140){
+    function confettiBurst(count=160){
       const c = document.createElement("canvas");
       c.width = innerWidth;
       c.height = innerHeight;
@@ -841,83 +851,6 @@
       frame();
     }
 
-    // ====== Modal ======
-    const backdrop = $("#backdrop");
-    function openModal(){
-      backdrop.style.display = "flex";
-      confettiBurst(180);
-      toast("OPENED");
-      playWin();
-    }
-    function closeModal(){
-      backdrop.style.display = "none";
-    }
-
-    $("#openGifts").addEventListener("click", openModal);
-    $("#closeModal").addEventListener("click", closeModal);
-    backdrop.addEventListener("click", (e)=>{
-      if(e.target === backdrop) closeModal();
-    });
-
-    // ====== Mini game: catch heart ======
-    let score = 0;
-    const scoreEl = $("#score");
-    const catchBtn = $("#catchBtn");
-
-    function moveCatch(){
-      const frame = $("#frame");
-      const rect = frame.getBoundingClientRect();
-      const x = rand(rect.left + rect.width*0.62, rect.right - 90);
-      const y = rand(rect.top + 120, rect.bottom - 90);
-
-      catchBtn.style.position = "fixed";
-      catchBtn.style.left = Math.min(innerWidth - 90, Math.max(10, x)) + "px";
-      catchBtn.style.top  = Math.min(innerHeight - 90, Math.max(10, y)) + "px";
-    }
-    setTimeout(()=> moveCatch(), 450);
-
-    catchBtn.addEventListener("click", ()=>{
-      score++;
-      scoreEl.textContent = score;
-      spawnHeart();
-      confettiBurst(55);
-      playPop();
-      moveCatch();
-
-      if(score === CONFIG.unlockScore){
-        $("#letter").innerHTML = `
-          <p><b>СЮРПРИЗ РАЗБЛОКИРОВАН ✅</b></p>
-          <p>Ты поймал <b>${CONFIG.unlockScore}</b> сердец. Значит всё честно: сегодня мой официальный праздник — <b>день “мой мужчина”</b>.</p>
-          <p>Я люблю тебя. Не “когда удобно”, а по-настоящему. ❤️</p>
-        `;
-        openModal();
-        toast("UNLOCKED");
-      }
-    });
-
-    // ====== Yes / No buttons ======
-    $("#yesBtn").addEventListener("click", ()=>{
-      confettiBurst(240);
-      toast("YES 💚");
-      playWin();
-    });
-
-    const noBtn = $("#noBtn");
-    noBtn.addEventListener("mouseenter", dodgeNo);
-    noBtn.addEventListener("click", dodgeNo);
-
-    function dodgeNo(){
-      const modal = $(".modal");
-      const r = modal.getBoundingClientRect();
-      const x = rand(r.left + 14, r.right - 130);
-      const y = rand(r.top + 70, r.bottom - 70);
-      noBtn.style.position = "fixed";
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-      toast("NOPE 🙃");
-      playPop();
-    }
-
     // ====== Toast ======
     const toastEl = $("#toast");
     let toastTimer = null;
@@ -928,34 +861,14 @@
       toastTimer = setTimeout(()=> toastEl.style.display="none", 1600);
     }
 
-    // ====== Keyboard shortcuts ======
-    window.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape") closeModal();
-      if(e.key === " "){
-        e.preventDefault();
-        confettiBurst(160);
-        toast("BOOM ✨");
-        playWin();
-      }
-      if(e.key.toLowerCase() === "h"){
-        heartsBoost = !heartsBoost;
-        toggleHeartsBtn.textContent = heartsBoost ? "💖 HEARTS: MAX" : "💖 HEARTS: NORMAL";
-        stopHearts(); startHearts();
-        toast(heartsBoost ? "HEARTS MAX" : "HEARTS NORMAL");
-      }
-    });
-
-    // ====== Optional sound (WebAudio, no files) ======
+    // =======================
+    //   SOUND: BGM + SFX
+    // =======================
     let soundOn = false;
     let audioCtx = null;
 
-    $("#toggleSound").addEventListener("click", ()=>{
-      soundOn = !soundOn;
-      $("#toggleSound").setAttribute("aria-pressed", String(soundOn));
-      $("#toggleSound").textContent = soundOn ? "🔊 SOUND: ON" : "🔈 SOUND: OFF";
-      toast(soundOn ? "SOUND ON" : "SOUND OFF");
-      if(soundOn) ensureAudio();
-    });
+    const bgm = document.getElementById("bgm");
+    bgm.volume = 0.35;
 
     function ensureAudio(){
       if(!audioCtx){
@@ -964,29 +877,395 @@
       if(audioCtx.state === "suspended") audioCtx.resume();
     }
 
-    function beep(freq=440, dur=0.08, type="square", gain=0.03){
+    function tone({freq=440, dur=0.08, type="square", gain=0.03, slideTo=null}){
       if(!soundOn) return;
       ensureAudio();
       const o = audioCtx.createOscillator();
       const g = audioCtx.createGain();
       o.type = type;
-      o.frequency.value = freq;
-      g.gain.value = gain;
+      o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      if(slideTo){
+        o.frequency.exponentialRampToValueAtTime(slideTo, audioCtx.currentTime + dur);
+      }
+      g.gain.setValueAtTime(gain, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
       o.connect(g); g.connect(audioCtx.destination);
-      o.start();
-      o.stop(audioCtx.currentTime + dur);
-    }
-    function playPop(){
-      beep(784, 0.055, "square", 0.03);
-      beep(988, 0.05, "square", 0.02);
-    }
-    function playWin(){
-      beep(523.25, 0.07, "square", 0.03);
-      beep(659.25, 0.07, "square", 0.03);
-      beep(783.99, 0.10, "square", 0.03);
+      o.start(); o.stop(audioCtx.currentTime + dur);
     }
 
-    window.addEventListener("resize", ()=> moveCatch());
+    function noise({dur=0.12, gain=0.02}){
+      if(!soundOn) return;
+      ensureAudio();
+      const bufferSize = Math.floor(audioCtx.sampleRate * dur);
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i=0;i<bufferSize;i++){
+        data[i] = (Math.random()*2 - 1) * (1 - i/bufferSize);
+      }
+      const src = audioCtx.createBufferSource();
+      src.buffer = buffer;
+      const g = audioCtx.createGain();
+      g.gain.value = gain;
+      src.connect(g); g.connect(audioCtx.destination);
+      src.start(); src.stop(audioCtx.currentTime + dur);
+    }
+
+    function sfxHeart(){
+      tone({freq:740, dur:0.06, type:"square", gain:0.03});
+      tone({freq:980, dur:0.05, type:"square", gain:0.02});
+    }
+    function sfxConfetti(){
+      tone({freq:523.25, dur:0.06, type:"square", gain:0.03});
+      tone({freq:659.25, dur:0.06, type:"square", gain:0.03});
+      tone({freq:783.99, dur:0.10, type:"square", gain:0.03});
+      noise({dur:0.10, gain:0.015});
+    }
+    function sfxOpen(){
+      tone({freq:392, dur:0.08, type:"triangle", gain:0.03, slideTo:523.25});
+      tone({freq:523.25, dur:0.10, type:"triangle", gain:0.03, slideTo:659.25});
+    }
+    function sfxNope(){
+      tone({freq:220, dur:0.09, type:"sawtooth", gain:0.02, slideTo:180});
+    }
+    function sfxYes(){
+      tone({freq:659.25, dur:0.06, type:"square", gain:0.03});
+      tone({freq:783.99, dur:0.06, type:"square", gain:0.03});
+      tone({freq:987.77, dur:0.12, type:"square", gain:0.03});
+      noise({dur:0.08, gain:0.01});
+    }
+
+    const toggleSoundBtn = $("#toggleSound");
+    toggleSoundBtn.addEventListener("click", async ()=>{
+      soundOn = !soundOn;
+      toggleSoundBtn.setAttribute("aria-pressed", String(soundOn));
+      toggleSoundBtn.textContent = soundOn ? "🔊 SOUND: ON" : "🔈 SOUND: OFF";
+      toast(soundOn ? "SOUND ON" : "SOUND OFF");
+      if(soundOn){
+        ensureAudio();
+        try { await bgm.play(); } catch(e) {}
+        sfxOpen();
+      } else {
+        bgm.pause();
+      }
+    });
+
+    // ====== Hearts toggle button ======
+    const toggleHeartsBtn = $("#toggleHearts");
+    toggleHeartsBtn.addEventListener("click", ()=>{
+      heartsBoost = !heartsBoost;
+      toggleHeartsBtn.textContent = heartsBoost ? "💖 HEARTS: MAX" : "💖 HEARTS: NORMAL";
+      toast(heartsBoost ? "HEARTS MAX" : "HEARTS NORMAL");
+      stopHearts(); startHearts();
+      sfxHeart();
+    });
+
+    // =======================
+    //   ROOMS LOGIC
+    // =======================
+
+    // Room 1 state
+    let room1Score = 0;
+
+    // Room 2 state
+    const targetPhrase = GAME.room2Phrase.toUpperCase();
+    const targetLetters = targetPhrase.replace(/[^A-Z0-9]/g, ""); // letters only
+    let room2Collected = "";
+    let room2Tiles = [];
+
+    function setRoom(n){
+      GAME.room = n;
+      roomLabel.textContent = `${n}/${GAME.roomsTotal}`;
+
+      // Reset UI areas
+      phraseBox.style.display = "none";
+      tilesEl.style.display = "none";
+      catchBtn.style.display = "none";
+      catchBtn.style.position = "fixed"; // for moving
+      nextRoomBtn.disabled = true;
+
+      if(n === 1){
+        headlineEl.textContent = "ROOM 1: CATCH 💘";
+        typeText(GAME.roomText[1]);
+        room1Score = 0;
+        renderRightHudRoom1();
+        showCatchButton();
+        setObjective(`Поймай <b>${GAME.room1Target}</b> сердечек. Сейчас: <b>${room1Score}</b>.`);
+      }
+
+      if(n === 2){
+        headlineEl.textContent = "ROOM 2: COLLECT LETTERS";
+        typeText(GAME.roomText[2]);
+        renderRightHudRoom2();
+        initRoom2();
+        setObjective(`Собери фразу: <b>${targetPhrase}</b>`);
+      }
+
+      if(n === 3){
+        headlineEl.textContent = "ROOM 3: FINAL";
+        typeText(GAME.roomText[3]);
+        renderRightHudRoom3();
+        setObjective(`Нажми <b>OPEN LETTER</b> и ответь честно ❤️`);
+      }
+    }
+
+    function setObjective(html){
+      objectiveEl.innerHTML = `OBJECTIVE: ${html}`;
+    }
+
+    // NEXT ROOM button
+    nextRoomBtn.addEventListener("click", ()=>{
+      if(GAME.room < GAME.roomsTotal){
+        setRoom(GAME.room + 1);
+        confettiBurst(120);
+        sfxOpen();
+        toast("NEXT ROOM");
+      }
+    });
+
+    // ========== ROOM 1 ==========
+    function renderRightHudRoom1(){
+      rightHud.innerHTML = `
+        <div class="score">🧡 SCORE: <b id="r1Score">${room1Score}</b></div>
+        <div>CATCH 💘 TO WIN</div>
+      `;
+    }
+
+    function showCatchButton(){
+      catchBtn.style.display = "grid";
+      moveCatch();
+    }
+
+    function moveCatch(){
+      const frame = $("#frame");
+      const rect = frame.getBoundingClientRect();
+      const x = rand(rect.left + rect.width*0.62, rect.right - 90);
+      const y = rand(rect.top + 120, rect.bottom - 90);
+      catchBtn.style.left = Math.min(innerWidth - 90, Math.max(10, x)) + "px";
+      catchBtn.style.top  = Math.min(innerHeight - 90, Math.max(10, y)) + "px";
+    }
+
+    catchBtn.addEventListener("click", ()=>{
+      if(GAME.room !== 1) return;
+
+      room1Score++;
+      $("#r1Score").textContent = room1Score;
+
+      spawnHeart();
+      confettiBurst(55);
+      sfxHeart();
+      moveCatch();
+
+      setObjective(`Поймай <b>${GAME.room1Target}</b> сердечек. Сейчас: <b>${room1Score}</b>.`);
+
+      if(room1Score >= GAME.room1Target){
+        nextRoomBtn.disabled = false;
+        toast("ROOM 1 CLEARED");
+        sfxYes();
+        confettiBurst(220);
+      }
+    });
+
+    // ========== ROOM 2 ==========
+    function renderRightHudRoom2(){
+      rightHud.innerHTML = `
+        <div class="score">🧩 COLLECTED: <b id="r2Count">0</b> / <b>${targetLetters.length}</b></div>
+        <div>CLICK LETTER TILES</div>
+      `;
+    }
+
+    function initRoom2(){
+      room2Collected = "";
+      updatePhraseProgress();
+
+      phraseBox.style.display = "flex";
+      tilesEl.style.display = "grid";
+      tilesEl.innerHTML = "";
+
+      // Create tiles: all needed letters + some decoys
+      const needed = targetLetters.split("");
+      const decoys = [];
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const decoyCount = Math.min(10, 24 - needed.length);
+      for(let i=0;i<decoyCount;i++){
+        decoys.push(alphabet[(Math.random()*alphabet.length)|0]);
+      }
+
+      room2Tiles = shuffle([...needed, ...decoys]).slice(0, 24);
+      // Ensure grid doesn’t look empty on mobile
+      while(room2Tiles.length < 24) room2Tiles.push(alphabet[(Math.random()*alphabet.length)|0]);
+
+      room2Tiles.forEach((ch, idx)=>{
+        const btn = document.createElement("button");
+        btn.className = "tile";
+        btn.type = "button";
+        btn.textContent = ch;
+        btn.dataset.ch = ch;
+        btn.dataset.idx = String(idx);
+        btn.addEventListener("click", ()=> onTileClick(btn));
+        tilesEl.appendChild(btn);
+      });
+
+      $("#r2Count").textContent = "0";
+      nextRoomBtn.disabled = true;
+    }
+
+    function updatePhraseProgress(){
+      // Show underscores for remaining letters; spaces are preserved in display
+      const show = [];
+      let collectedIdx = 0;
+      for(const ch of targetPhrase){
+        if(ch === " "){
+          show.push(" ");
+        } else {
+          show.push(collectedIdx < room2Collected.length ? room2Collected[collectedIdx++] : "_");
+        }
+      }
+      phraseProgress.textContent = show.join("");
+    }
+
+    function onTileClick(btn){
+      if(GAME.room !== 2) return;
+      if(btn.classList.contains("used")) return;
+
+      const ch = btn.dataset.ch;
+
+      const expected = targetLetters[room2Collected.length];
+      if(ch === expected){
+        btn.classList.add("used","good");
+        room2Collected += ch;
+        sfxHeart();
+        spawnHeart();
+        $("#r2Count").textContent = String(room2Collected.length);
+        updatePhraseProgress();
+
+        if(room2Collected.length === targetLetters.length){
+          nextRoomBtn.disabled = false;
+          toast("ROOM 2 CLEARED");
+          sfxYes();
+          confettiBurst(240);
+        }
+      } else {
+        btn.classList.add("bad");
+        sfxNope();
+        toast("WRONG");
+        // small punishment: shake visual by quick transform
+        btn.style.transform = "translateX(-3px)";
+        setTimeout(()=> btn.style.transform = "", 80);
+        setTimeout(()=> btn.classList.remove("bad"), 220);
+      }
+    }
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = (Math.random()*(i+1))|0;
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    // ========== ROOM 3 ==========
+    function renderRightHudRoom3(){
+      rightHud.innerHTML = `
+        <div class="score">🏁 STATUS: <b>FINAL</b></div>
+        <div>OPEN LETTER 💌</div>
+      `;
+      // Make NEXT ROOM button become "OPEN LETTER"
+      nextRoomBtn.textContent = "💌 OPEN LETTER";
+      nextRoomBtn.disabled = false;
+      nextRoomBtn.onclick = ()=> openModal();
+    }
+
+    // When leaving room 3 later (none), restore NEXT ROOM behavior if needed
+    function restoreNextRoomBtn(){
+      nextRoomBtn.textContent = "➡ NEXT ROOM";
+      nextRoomBtn.onclick = null;
+    }
+
+    // ====== Modal ======
+    function openModal(){
+      backdrop.style.display = "flex";
+      confettiBurst(180);
+      sfxOpen();
+      toast("OPENED");
+    }
+    function closeModal(){
+      backdrop.style.display = "none";
+    }
+
+    closeModalBtn.addEventListener("click", closeModal);
+    backdrop.addEventListener("click", (e)=>{
+      if(e.target === backdrop) closeModal();
+    });
+
+    yesBtn.addEventListener("click", ()=>{
+      confettiBurst(320);
+      sfxYes();
+      toast("YOU WIN 💍");
+      // Victory message
+      $("#letter").innerHTML = `
+        <p><b>YOU WIN 💍</b></p>
+        <p>Окей. Теперь официально: ты — мой мужчина.</p>
+        <p>И я люблю тебя. По-взрослому. По-настоящему. ❤️</p>
+      `;
+    });
+
+    function dodgeNo(){
+      const modal = $(".modal");
+      const r = modal.getBoundingClientRect();
+      const x = rand(r.left + 14, r.right - 130);
+      const y = rand(r.top + 70, r.bottom - 70);
+      noBtn.style.position = "fixed";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+      sfxNope();
+      toast("NOPE 🙃");
+    }
+    noBtn.addEventListener("mouseenter", dodgeNo);
+    noBtn.addEventListener("click", dodgeNo);
+
+    // ====== Keyboard shortcuts ======
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape") closeModal();
+      if(e.key === " "){
+        e.preventDefault();
+        confettiBurst(170);
+        sfxConfetti();
+        toast("BOOM ✨");
+      }
+      if(e.key.toLowerCase() === "h"){
+        heartsBoost = !heartsBoost;
+        toggleHeartsBtn.textContent = heartsBoost ? "💖 HEARTS: MAX" : "💖 HEARTS: NORMAL";
+        stopHearts(); startHearts();
+        sfxHeart();
+        toast(heartsBoost ? "HEARTS MAX" : "HEARTS NORMAL");
+      }
+    });
+
+    window.addEventListener("resize", ()=>{
+      if(GAME.room === 1) moveCatch();
+    });
+
+    // ====== Start game ======
+    // Ensure NEXT ROOM button default behavior for rooms 1-2
+    nextRoomBtn.onclick = null;
+
+    // Room 3 changes NEXT ROOM button into OPEN LETTER; restore when leaving (not needed here, but safe)
+    const originalSetRoom = setRoom;
+    // Hook: when switching to room <3 from 3, restore button
+    const _setRoom = (n)=>{
+      if(GAME.room === 3 && n !== 3) restoreNextRoomBtn();
+      setRoom(n);
+    };
+
+    // Just start at room 1
+    setRoom(1);
+
+    // When entering room 2 or 3 via NEXT ROOM click, we must restore handler properly:
+    // We’ll manage it in setRoom transitions
+    nextRoomBtn.addEventListener("click", ()=>{
+      // This handler is overwritten in room3 with onclick; for rooms 1-2 we use the earlier click listener
+    });
   </script>
 </body>
 </html>
