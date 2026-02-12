@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>💘 Valentine Quest (3 Rooms)</title>
+  <title>💘 Валентинка-игра (3 комнаты)</title>
 
   <!-- Fonts: Intel One Mono + Ubuntu -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,9 +21,6 @@
       --neon2:#ff2a6d;
       --neon3:#7d5cff;
       --neon4:#ffe66d;
-
-      --ui:#141127;
-      --ui2:#1b1635;
 
       --panel:#ffbfd6;
       --panel2:#ff9fc6;
@@ -146,6 +143,7 @@
       text-transform: uppercase;
       color: #fff;
       text-shadow: 0 0 18px rgba(0,255,213,.25);
+      user-select:none;
     }
     .logo .chip{
       width:14px; height:14px;
@@ -368,8 +366,6 @@
     }
     .tile:active{ transform: translateY(1px) scale(.99); }
     .tile.used{ opacity:.35; cursor:not-allowed; }
-    .tile.good{ filter: brightness(1.02); }
-    .tile.bad{ filter: grayscale(.35) brightness(.95); }
 
     .phrase{
       padding:12px 14px;
@@ -386,6 +382,7 @@
       justify-content:space-between;
       gap:12px;
       color: var(--ink);
+      user-select:none;
     }
     .phrase span{ opacity:.9; }
     .phrase b{ color: var(--neon2); }
@@ -462,6 +459,7 @@
       letter-spacing:.4px;
       color: var(--ink);
       font-weight: 900;
+      user-select:none;
     }
     .x{
       border:0;
@@ -560,30 +558,30 @@
         </div>
 
         <div class="hud-right">
-          <div class="pill"><span class="dot"></span> ROOM: <b id="roomLabel">1/3</b></div>
-          <div class="pill">PRESS <b>SPACE</b> = CONFETTI</div>
-          <div class="pill">PRESS <b>H</b> = HEARTS</div>
+          <div class="pill"><span class="dot"></span> КОМНАТА: <b id="roomLabel">1/3</b></div>
+          <div class="pill">ПРОБЕЛ = <b>КОНФЕТТИ</b></div>
+          <div class="pill">H = <b>СЕРДЦА</b></div>
         </div>
       </div>
 
       <div class="screen">
         <!-- LEFT -->
         <div class="panel left">
-          <h1 id="headline">ROOM 1: CATCH 💘</h1>
+          <h1 id="headline">КОМНАТА 1: ПОЙМАЙ 💘</h1>
           <p class="sub" id="typed"></p>
 
           <div class="objective" id="objective"></div>
 
           <div class="actions">
-            <button class="btn btn-primary" id="nextRoom" disabled>➡ NEXT ROOM</button>
-            <button class="btn btn-ghost" id="toggleHearts">💖 HEARTS: NORMAL</button>
-            <button class="btn btn-ghost" id="toggleSound" aria-pressed="false">🔈 SOUND: OFF</button>
+            <button class="btn btn-primary" id="nextRoom" disabled>➡ ДАЛЬШЕ</button>
+            <button class="btn btn-ghost" id="toggleHearts">💖 СЕРДЦА: НОРМА</button>
+            <button class="btn btn-ghost" id="toggleSound" aria-pressed="false">🔈 ЗВУК: ВЫКЛ</button>
           </div>
 
           <div class="hint">
-            <span class="kbd">SPACE</span> confetti
-            <span class="kbd">H</span> hearts
-            <span class="kbd">ESC</span> close
+            <span class="kbd">ПРОБЕЛ</span> конфетти
+            <span class="kbd">H</span> сердца
+            <span class="kbd">ESC</span> закрыть
           </div>
         </div>
 
@@ -654,7 +652,7 @@
 
           <!-- Room 2 UI -->
           <div class="phrase" id="phraseBox" style="display:none;">
-            <span>PHRASE:</span>
+            <span>ФРАЗА:</span>
             <b id="phraseProgress">______</b>
           </div>
           <div class="tiles" id="tiles" style="display:none;"></div>
@@ -672,29 +670,39 @@
   <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
       <header>
-        <span id="modalTitle">LOVE LETTER</span>
+        <span id="modalTitle">ПИСЬМО</span>
         <button class="x" id="closeModal" aria-label="Закрыть">×</button>
       </header>
 
       <div class="content">
         <div class="letter" id="letter">
           <p><b>Любимый,</b></p>
+
           <p>
-            мне нравится в тебе то, что редко бывает в людях: спокойная сила, надёжность и чувство,
-            что рядом — мой человек.
+            Я ценю в тебе то, что со временем становится только важнее: спокойствие, надёжность и уважение.
+            Рядом с тобой мне не нужно “держаться” — можно просто быть собой.
           </p>
-          <p>
-            Я не хочу “красивых слов ради слов”. Я хочу тебя — рядом, по-настоящему, каждый день.
-            И да, я выбираю тебя. ❤️
+
+          <p style="margin-top:12px"><b>Несколько строк о любви — в духе разных авторов:</b></p>
+
+          <p>— <i>В духе Экзюпери:</i> любить — значит смотреть в одном направлении и держать общий курс.</p>
+          <p>— <i>В духе Чехова:</i> любовь видно не по словам, а по тому, как человек заботится и бережёт.</p>
+          <p>— <i>В духе Ахматовой:</i> чувство не кричит — оно остаётся и выдерживает.</p>
+          <p>— <i>В духе Толстого:</i> любовь — это выбор и ответственность, которые подтверждаются делами.</p>
+          <p>— <i>В духе Ремарка:</i> с “своим” человеком мир не становится проще — но становится переносимым.</p>
+
+          <p style="opacity:.92;margin-top:12px">
+            А от себя скажу коротко: ты — мой человек. Мне важно, что мы есть. И я это берегу.
           </p>
+
           <p style="opacity:.75;margin-top:10px">
-            P.S. Ты прошёл все комнаты. Теперь только один вопрос.
+            P.S. Ты прошёл все комнаты. Если ты тоже выбираешь нас — нажми «ДА». ❤️
           </p>
         </div>
 
         <div class="qa">
-          <button class="btn btn-primary btn-yes" id="yesBtn">ДА, Я ТВОЯ 💚</button>
-          <button class="btn btn-no" id="noBtn">НЕТ 🙃</button>
+          <button class="btn btn-primary btn-yes" id="yesBtn">ДА ❤️</button>
+          <button class="btn btn-no" id="noBtn">НЕТ 🙂</button>
         </div>
       </div>
     </div>
@@ -704,19 +712,19 @@
 
   <script>
     // =======================
-    //   GAME CONFIG (female -> boyfriend)
+    //   GAME CONFIG (всё на русском)
     // =======================
     const GAME = {
       room: 1,
       roomsTotal: 3,
 
-      room1Target: 7, // catch hearts
-      room2Phrase: "MY MAN", // phrase to collect (letters only, spaces auto)
-      // Text per room
+      room1Target: 7,          // поймать сердечки
+      room2Phrase: "МОЙ ЧЕЛОВЕК", // собрать фразу (кириллица)
+
       roomText: {
-        1: "ROOM 1. Я спрятала любовь в сердечках. Поймай их, и мы откроем следующую комнату 😌",
-        2: "ROOM 2. Собери фразу. Да, я говорю это вслух: ты — мой мужчина. Нажимай по буквам.",
-        3: "ROOM 3. Финал. Никаких игр (ну почти). Нажми OPEN LETTER — и отвечай честно ❤️",
+        1: "КОМНАТА 1. Я люблю без громких жестов — теплом, вниманием и заботой. Поймай сердечки: это мои маленькие «я рядом».",
+        2: "КОМНАТА 2. Собери фразу. Она простая, как правда: ты — мой человек. И мне спокойно рядом с тобой.",
+        3: "КОМНАТА 3. Финал. Здесь уже не нужно угадывать. Здесь можно просто прочитать — и улыбнуться.",
       }
     };
 
@@ -733,7 +741,6 @@
     const rightHud = $("#rightHud");
 
     const catchBtn = $("#catchBtn");
-    const scoreSpan = document.createElement("b");
 
     const phraseBox = $("#phraseBox");
     const phraseProgress = $("#phraseProgress");
@@ -938,8 +945,8 @@
     toggleSoundBtn.addEventListener("click", async ()=>{
       soundOn = !soundOn;
       toggleSoundBtn.setAttribute("aria-pressed", String(soundOn));
-      toggleSoundBtn.textContent = soundOn ? "🔊 SOUND: ON" : "🔈 SOUND: OFF";
-      toast(soundOn ? "SOUND ON" : "SOUND OFF");
+      toggleSoundBtn.textContent = soundOn ? "🔊 ЗВУК: ВКЛ" : "🔈 ЗВУК: ВЫКЛ";
+      toast(soundOn ? "ЗВУК ВКЛЮЧЕН" : "ЗВУК ВЫКЛЮЧЕН");
       if(soundOn){
         ensureAudio();
         try { await bgm.play(); } catch(e) {}
@@ -953,8 +960,8 @@
     const toggleHeartsBtn = $("#toggleHearts");
     toggleHeartsBtn.addEventListener("click", ()=>{
       heartsBoost = !heartsBoost;
-      toggleHeartsBtn.textContent = heartsBoost ? "💖 HEARTS: MAX" : "💖 HEARTS: NORMAL";
-      toast(heartsBoost ? "HEARTS MAX" : "HEARTS NORMAL");
+      toggleHeartsBtn.textContent = heartsBoost ? "💖 СЕРДЦА: МАКС" : "💖 СЕРДЦА: НОРМА";
+      toast(heartsBoost ? "СЕРДЦА: МАКС" : "СЕРДЦА: НОРМА");
       stopHearts(); startHearts();
       sfxHeart();
     });
@@ -966,9 +973,9 @@
     // Room 1 state
     let room1Score = 0;
 
-    // Room 2 state
-    const targetPhrase = GAME.room2Phrase.toUpperCase();
-    const targetLetters = targetPhrase.replace(/[^A-Z0-9]/g, ""); // letters only
+    // Room 2 state (кириллица)
+    const targetPhrase = GAME.room2Phrase.toUpperCase().replace(/Ё/g, "Е");
+    const targetLetters = targetPhrase.replace(/[^А-Я0-9]/g, "");
     let room2Collected = "";
     let room2Tiles = [];
 
@@ -980,12 +987,17 @@
       phraseBox.style.display = "none";
       tilesEl.style.display = "none";
       catchBtn.style.display = "none";
-      catchBtn.style.position = "fixed"; // for moving
+      catchBtn.style.position = "fixed";
       nextRoomBtn.disabled = true;
 
+      // Reset button default (важно после комнаты 3)
+      nextRoomBtn.textContent = "➡ ДАЛЬШЕ";
+      nextRoomBtn.onclick = null;
+
       if(n === 1){
-        headlineEl.textContent = "ROOM 1: CATCH 💘";
+        headlineEl.textContent = "КОМНАТА 1: ПОЙМАЙ 💘";
         typeText(GAME.roomText[1]);
+
         room1Score = 0;
         renderRightHudRoom1();
         showCatchButton();
@@ -993,23 +1005,25 @@
       }
 
       if(n === 2){
-        headlineEl.textContent = "ROOM 2: COLLECT LETTERS";
+        headlineEl.textContent = "КОМНАТА 2: СОБЕРИ ФРАЗУ";
         typeText(GAME.roomText[2]);
+
         renderRightHudRoom2();
         initRoom2();
-        setObjective(`Собери фразу: <b>${targetPhrase}</b>`);
+        setObjective(`Собери фразу: <b>${GAME.room2Phrase}</b>`);
       }
 
       if(n === 3){
-        headlineEl.textContent = "ROOM 3: FINAL";
+        headlineEl.textContent = "КОМНАТА 3: ФИНАЛ";
         typeText(GAME.roomText[3]);
+
         renderRightHudRoom3();
-        setObjective(`Нажми <b>OPEN LETTER</b> и ответь честно ❤️`);
+        setObjective(`Нажми <b>ОТКРЫТЬ ПИСЬМО</b> и ответь честно ❤️`);
       }
     }
 
     function setObjective(html){
-      objectiveEl.innerHTML = `OBJECTIVE: ${html}`;
+      objectiveEl.innerHTML = `ЗАДАНИЕ: ${html}`;
     }
 
     // NEXT ROOM button
@@ -1018,15 +1032,15 @@
         setRoom(GAME.room + 1);
         confettiBurst(120);
         sfxOpen();
-        toast("NEXT ROOM");
+        toast("СЛЕДУЮЩАЯ КОМНАТА");
       }
     });
 
     // ========== ROOM 1 ==========
     function renderRightHudRoom1(){
       rightHud.innerHTML = `
-        <div class="score">🧡 SCORE: <b id="r1Score">${room1Score}</b></div>
-        <div>CATCH 💘 TO WIN</div>
+        <div class="score">🧡 СЧЁТ: <b id="r1Score">${room1Score}</b></div>
+        <div>ПОЙМАЙ 💘</div>
       `;
     }
 
@@ -1059,7 +1073,7 @@
 
       if(room1Score >= GAME.room1Target){
         nextRoomBtn.disabled = false;
-        toast("ROOM 1 CLEARED");
+        toast("КОМНАТА 1 ПРОЙДЕНА");
         sfxYes();
         confettiBurst(220);
       }
@@ -1068,8 +1082,8 @@
     // ========== ROOM 2 ==========
     function renderRightHudRoom2(){
       rightHud.innerHTML = `
-        <div class="score">🧩 COLLECTED: <b id="r2Count">0</b> / <b>${targetLetters.length}</b></div>
-        <div>CLICK LETTER TILES</div>
+        <div class="score">🧩 СОБРАНО: <b id="r2Count">0</b> / <b>${targetLetters.length}</b></div>
+        <div>ЖМИ НА БУКВЫ</div>
       `;
     }
 
@@ -1084,23 +1098,22 @@
       // Create tiles: all needed letters + some decoys
       const needed = targetLetters.split("");
       const decoys = [];
-      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const alphabet = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789";
       const decoyCount = Math.min(10, 24 - needed.length);
+
       for(let i=0;i<decoyCount;i++){
         decoys.push(alphabet[(Math.random()*alphabet.length)|0]);
       }
 
       room2Tiles = shuffle([...needed, ...decoys]).slice(0, 24);
-      // Ensure grid doesn’t look empty on mobile
       while(room2Tiles.length < 24) room2Tiles.push(alphabet[(Math.random()*alphabet.length)|0]);
 
-      room2Tiles.forEach((ch, idx)=>{
+      room2Tiles.forEach((ch)=>{
         const btn = document.createElement("button");
         btn.className = "tile";
         btn.type = "button";
         btn.textContent = ch;
         btn.dataset.ch = ch;
-        btn.dataset.idx = String(idx);
         btn.addEventListener("click", ()=> onTileClick(btn));
         tilesEl.appendChild(btn);
       });
@@ -1110,7 +1123,6 @@
     }
 
     function updatePhraseProgress(){
-      // Show underscores for remaining letters; spaces are preserved in display
       const show = [];
       let collectedIdx = 0;
       for(const ch of targetPhrase){
@@ -1128,11 +1140,12 @@
       if(btn.classList.contains("used")) return;
 
       const ch = btn.dataset.ch;
-
       const expected = targetLetters[room2Collected.length];
+
       if(ch === expected){
-        btn.classList.add("used","good");
+        btn.classList.add("used");
         room2Collected += ch;
+
         sfxHeart();
         spawnHeart();
         $("#r2Count").textContent = String(room2Collected.length);
@@ -1140,18 +1153,15 @@
 
         if(room2Collected.length === targetLetters.length){
           nextRoomBtn.disabled = false;
-          toast("ROOM 2 CLEARED");
+          toast("КОМНАТА 2 ПРОЙДЕНА");
           sfxYes();
           confettiBurst(240);
         }
       } else {
-        btn.classList.add("bad");
         sfxNope();
-        toast("WRONG");
-        // small punishment: shake visual by quick transform
+        toast("НЕ ТА БУКВА");
         btn.style.transform = "translateX(-3px)";
         setTimeout(()=> btn.style.transform = "", 80);
-        setTimeout(()=> btn.classList.remove("bad"), 220);
       }
     }
 
@@ -1167,19 +1177,13 @@
     // ========== ROOM 3 ==========
     function renderRightHudRoom3(){
       rightHud.innerHTML = `
-        <div class="score">🏁 STATUS: <b>FINAL</b></div>
-        <div>OPEN LETTER 💌</div>
+        <div class="score">🏁 СТАТУС: <b>ФИНАЛ</b></div>
+        <div>ОТКРОЙ ПИСЬМО 💌</div>
       `;
-      // Make NEXT ROOM button become "OPEN LETTER"
-      nextRoomBtn.textContent = "💌 OPEN LETTER";
+
+      nextRoomBtn.textContent = "💌 ОТКРЫТЬ ПИСЬМО";
       nextRoomBtn.disabled = false;
       nextRoomBtn.onclick = ()=> openModal();
-    }
-
-    // When leaving room 3 later (none), restore NEXT ROOM behavior if needed
-    function restoreNextRoomBtn(){
-      nextRoomBtn.textContent = "➡ NEXT ROOM";
-      nextRoomBtn.onclick = null;
     }
 
     // ====== Modal ======
@@ -1187,7 +1191,7 @@
       backdrop.style.display = "flex";
       confettiBurst(180);
       sfxOpen();
-      toast("OPENED");
+      toast("ПИСЬМО ОТКРЫТО");
     }
     function closeModal(){
       backdrop.style.display = "none";
@@ -1201,12 +1205,12 @@
     yesBtn.addEventListener("click", ()=>{
       confettiBurst(320);
       sfxYes();
-      toast("YOU WIN 💍");
-      // Victory message
+      toast("ПОБЕДА 💍");
+
       $("#letter").innerHTML = `
-        <p><b>YOU WIN 💍</b></p>
-        <p>Окей. Теперь официально: ты — мой мужчина.</p>
-        <p>И я люблю тебя. По-взрослому. По-настоящему. ❤️</p>
+        <p><b>ФИНАЛ 💍</b></p>
+        <p>Спасибо, что прошёл эту маленькую игру.</p>
+        <p>Я ценю нас. И я выбираю нас. ❤️</p>
       `;
     });
 
@@ -1219,7 +1223,7 @@
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
       sfxNope();
-      toast("NOPE 🙃");
+      toast("НЕТ НЕ ПРИНИМАЕТСЯ 🙂");
     }
     noBtn.addEventListener("mouseenter", dodgeNo);
     noBtn.addEventListener("click", dodgeNo);
@@ -1231,14 +1235,14 @@
         e.preventDefault();
         confettiBurst(170);
         sfxConfetti();
-        toast("BOOM ✨");
+        toast("КОНФЕТТИ ✨");
       }
       if(e.key.toLowerCase() === "h"){
         heartsBoost = !heartsBoost;
-        toggleHeartsBtn.textContent = heartsBoost ? "💖 HEARTS: MAX" : "💖 HEARTS: NORMAL";
+        toggleHeartsBtn.textContent = heartsBoost ? "💖 СЕРДЦА: МАКС" : "💖 СЕРДЦА: НОРМА";
         stopHearts(); startHearts();
         sfxHeart();
-        toast(heartsBoost ? "HEARTS MAX" : "HEARTS NORMAL");
+        toast(heartsBoost ? "СЕРДЦА: МАКС" : "СЕРДЦА: НОРМА");
       }
     });
 
@@ -1247,25 +1251,7 @@
     });
 
     // ====== Start game ======
-    // Ensure NEXT ROOM button default behavior for rooms 1-2
-    nextRoomBtn.onclick = null;
-
-    // Room 3 changes NEXT ROOM button into OPEN LETTER; restore when leaving (not needed here, but safe)
-    const originalSetRoom = setRoom;
-    // Hook: when switching to room <3 from 3, restore button
-    const _setRoom = (n)=>{
-      if(GAME.room === 3 && n !== 3) restoreNextRoomBtn();
-      setRoom(n);
-    };
-
-    // Just start at room 1
     setRoom(1);
-
-    // When entering room 2 or 3 via NEXT ROOM click, we must restore handler properly:
-    // We’ll manage it in setRoom transitions
-    nextRoomBtn.addEventListener("click", ()=>{
-      // This handler is overwritten in room3 with onclick; for rooms 1-2 we use the earlier click listener
-    });
   </script>
 </body>
 </html>
