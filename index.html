@@ -3,393 +3,421 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Valentine 💘</title>
+  <title>💘 Valentine Game</title>
+
+  <!-- Fonts: Intel One Mono + Ubuntu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Intel+One+Mono:wght@300;400;600;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0b0b10;
-      --card:#ffd6e6;
-      --card2:#ffcade;
-      --ink:#1a1020;
-      --muted:rgba(26,16,32,.65);
-      --btn:#ff2a5b;
-      --btn2:#ff5f87;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --radius: 26px;
+      --bg0:#05050a;
+      --bg1:#0b0a14;
+      --ink:#0e0c12;
+
+      /* SEGA-ish palette */
+      --neon1:#00ffd5;
+      --neon2:#ff2a6d;
+      --neon3:#7d5cff;
+      --neon4:#ffe66d;
+
+      --ui:#141127;
+      --ui2:#1b1635;
+
+      --panel:#ffbfd6;   /* card interior */
+      --panel2:#ff9fc6;
+
+      --px: 4px;         /* pixel scale for borders */
+      --radius: 18px;
+      --shadow: 0 20px 70px rgba(0,0,0,.55);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       background:
-        radial-gradient(1200px 900px at 20% 10%, rgba(255,62,120,.18), transparent 55%),
-        radial-gradient(900px 700px at 90% 30%, rgba(255,180,210,.18), transparent 60%),
-        radial-gradient(1200px 900px at 40% 90%, rgba(128,50,255,.12), transparent 55%),
-        linear-gradient(180deg, #07070b, #0b0b10 40%, #07070b);
-      color:#fff;
+        radial-gradient(1100px 700px at 15% 15%, rgba(0,255,213,.14), transparent 60%),
+        radial-gradient(900px 650px at 85% 30%, rgba(255,42,109,.14), transparent 60%),
+        radial-gradient(1000px 750px at 40% 90%, rgba(125,92,255,.14), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      color: #fff;
+      overflow:hidden;
+      font-family: "Ubuntu", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+
+    /* ===== CRT overlay ===== */
+    .crt{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:3;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0,0,0,.18) 0px,
+          rgba(0,0,0,.18) 1px,
+          rgba(255,255,255,.02) 2px,
+          rgba(255,255,255,.02) 4px
+        );
+      mix-blend-mode: overlay;
+      opacity:.55;
+    }
+    .vignette{
+      position:fixed; inset:-30%;
+      pointer-events:none;
+      z-index:2;
+      background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(0,0,0,.55) 75%);
+      opacity:.7;
+      filter: blur(18px);
+    }
+
+    /* ===== floating hearts layer ===== */
+    .float-layer{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:4;
       overflow:hidden;
     }
-
-    /* subtle animated background glow */
-    .bg-glow{
-      position:fixed; inset:-30%;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,42,91,.18), transparent 45%),
-        radial-gradient(circle at 70% 40%, rgba(255,214,230,.14), transparent 46%),
-        radial-gradient(circle at 50% 75%, rgba(123,66,255,.14), transparent 50%);
-      filter: blur(40px);
-      animation: drift 18s ease-in-out infinite alternate;
-      pointer-events:none;
-      z-index:0;
+    .float-heart{
+      position:absolute;
+      font-size: 18px;
+      opacity:.9;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+      animation: rise linear forwards;
+      will-change: transform, opacity;
+      user-select:none;
     }
-    @keyframes drift{
-      from{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
-      to  { transform: translate3d( 2%,  1%, 0) scale(1.06); }
+    @keyframes rise{
+      0%{ transform: translate3d(0, 40px, 0) scale(.9); opacity:0; }
+      12%{ opacity:.95; }
+      100%{ transform: translate3d(0, -120vh, 0) scale(1.25); opacity:0; }
     }
 
+    /* ===== main layout ===== */
     .wrap{
       position:relative;
       height:100%;
       display:grid;
       place-items:center;
-      z-index:1;
-      padding:24px;
+      padding:22px;
+      z-index:5;
     }
 
-    .card{
-      width:min(920px, 96vw);
-      min-height: min(520px, 78vh);
-      background: linear-gradient(180deg, var(--card), var(--card2));
+    /* ===== pixel UI frame (SEGA vibe) ===== */
+    .frame{
+      width:min(980px, 96vw);
+      min-height:min(560px, 80vh);
+      background: linear-gradient(180deg, rgba(20,17,39,.92), rgba(13,11,26,.92));
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       position:relative;
       overflow:hidden;
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
+
+      /* pixel border illusion */
+      outline: calc(var(--px)*2) solid rgba(0,255,213,.22);
+      outline-offset: -10px;
     }
 
-    /* top glossy strip */
-    .card::before{
+    .frame::before{
       content:"";
-      position:absolute;
-      left:-10%;
-      top:-40%;
-      width:120%;
-      height:70%;
-      background: radial-gradient(circle at 50% 60%, rgba(255,255,255,.35), transparent 65%);
-      transform: rotate(-6deg);
+      position:absolute; inset:0;
+      background:
+        radial-gradient(1200px 600px at 50% -20%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(90deg, rgba(0,255,213,.12), transparent 30%, rgba(255,42,109,.10) 70%, transparent);
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    /* top HUD bar */
+    .hud{
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:16px 18px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-family: "Intel One Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 0 18px rgba(0,255,213,.25);
+    }
+    .logo .chip{
+      width:14px; height:14px;
+      background: var(--neon1);
+      box-shadow: 0 0 0 6px rgba(0,255,213,.14), 0 0 28px rgba(0,255,213,.35);
+    }
+    .hud-right{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .pill{
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      font-weight:700;
+      font-size:12px;
+      letter-spacing:.35px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      padding:8px 10px;
+      border-radius: 999px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .pill b{ color: var(--neon4); font-weight:800; }
+    .pill .dot{
+      width:8px; height:8px;
+      border-radius:99px;
+      background: var(--neon2);
+      box-shadow: 0 0 18px rgba(255,42,109,.35);
+    }
+
+    /* ===== screen area ===== */
+    .screen{
+      position:relative;
+      z-index:1;
+      padding:18px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:16px;
+      height: calc(100% - 62px);
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,191,214,.95), rgba(255,159,198,.92));
+      color: var(--ink);
+      border-radius: 16px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+      overflow:hidden;
+      position:relative;
+      border: 1px solid rgba(255,255,255,.35);
+    }
+
+    /* pixel corner accents */
+    .panel::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,255,213,.14), transparent 30%, rgba(125,92,255,.12) 70%, transparent);
       opacity:.55;
       pointer-events:none;
     }
 
     .left{
-      padding:46px 44px;
+      padding:22px 22px 18px;
       display:flex;
       flex-direction:column;
-      justify-content:center;
-      gap:18px;
-      position:relative;
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      background: rgba(255,255,255,.55);
-      border: 1px solid rgba(255,255,255,.55);
-      color: var(--ink);
-      padding:8px 12px;
-      border-radius: 999px;
-      width:fit-content;
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-      backdrop-filter: blur(8px);
-      font-weight:600;
-      letter-spacing:.2px;
-    }
-    .badge .dot{
-      width:10px; height:10px; border-radius:99px;
-      background: var(--btn);
-      box-shadow: 0 0 0 6px rgba(255,42,91,.18);
+      gap:12px;
     }
 
     h1{
       margin:0;
-      color: var(--ink);
-      font-size: clamp(30px, 3.5vw, 56px);
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      font-weight: 900;
+      font-size: clamp(26px, 3.2vw, 50px);
       line-height:1.05;
-      letter-spacing:-.8px;
+      letter-spacing:-.6px;
+      text-transform: uppercase;
     }
 
     .sub{
       margin:0;
-      color: var(--muted);
       font-size: clamp(14px, 1.55vw, 18px);
       line-height:1.55;
-      max-width: 48ch;
-      min-height: 3.2em;
+      opacity:.85;
+      min-height: 3.6em;
     }
 
     .actions{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      flex-wrap:wrap;
       margin-top:6px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
     }
 
     .btn{
       appearance:none;
       border:0;
       cursor:pointer;
-      padding:14px 18px;
-      border-radius: 14px;
-      font-weight:800;
-      letter-spacing:.3px;
-      transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+      padding:12px 14px;
+      border-radius: 12px;
+      font-weight: 900;
+      letter-spacing:.4px;
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      text-transform: uppercase;
+      transition: transform .08s ease, filter .2s ease, box-shadow .2s ease;
+      user-select:none;
       display:inline-flex;
       align-items:center;
       gap:10px;
-      user-select:none;
     }
     .btn:active{ transform: translateY(1px) scale(.99); }
 
     .btn-primary{
       color:white;
-      background: linear-gradient(180deg, var(--btn), #ff1f50);
-      box-shadow: 0 18px 40px rgba(255,42,91,.25);
+      background: linear-gradient(180deg, var(--neon2), #ff1f58);
+      box-shadow: 0 16px 34px rgba(255,42,109,.32);
     }
-    .btn-primary:hover{ filter: brightness(1.02); }
+    .btn-primary:hover{ filter: brightness(1.03); }
 
     .btn-ghost{
+      background: rgba(255,255,255,.70);
       color: var(--ink);
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(255,255,255,.7);
-      box-shadow: 0 12px 28px rgba(0,0,0,.08);
-      font-weight:800;
+      border: 1px solid rgba(0,0,0,.08);
+      box-shadow: 0 12px 26px rgba(0,0,0,.12);
     }
 
     .hint{
-      color: rgba(26,16,32,.55);
-      font-size: 12.5px;
-      margin-top:2px;
+      margin-top:auto;
+      padding-top:12px;
       display:flex;
-      align-items:center;
+      flex-wrap:wrap;
       gap:10px;
+      align-items:center;
+      font-size:12.5px;
+      opacity:.7;
+      font-family:"Intel One Mono", ui-monospace, monospace;
     }
     .kbd{
       padding:2px 8px;
-      border-radius: 8px;
-      border:1px solid rgba(26,16,32,.18);
-      background: rgba(255,255,255,.55);
-      font-weight:700;
+      border-radius: 10px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(0,0,0,.10);
+      font-weight:900;
     }
 
-    /* right side */
+    /* ===== right side: Bubu & Dudu (NOT sega style) ===== */
     .right{
-      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .charbox{
       display:grid;
       place-items:center;
-      padding:34px 26px;
+      padding:12px;
     }
-
-    .mascot{
-      width:min(330px, 70%);
+    .characters{
+      width:100%;
+      max-width: 360px;
       aspect-ratio: 1 / 1;
-      border-radius: 999px;
-      background: rgba(255,255,255,.55);
-      border: 1px solid rgba(255,255,255,.65);
-      box-shadow: 0 18px 50px rgba(0,0,0,.10);
-      display:grid;
-      place-items:center;
+      border-radius: 18px;
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 14px 34px rgba(0,0,0,.14);
       position:relative;
-      transform: translateY(-4px);
-      animation: floaty 3.6s ease-in-out infinite;
+      overflow:hidden;
     }
-    @keyframes floaty{
-      0%,100%{ transform: translateY(-4px); }
-      50%{ transform: translateY(6px); }
-    }
-
-    /* simple “bears” using CSS shapes (no images needed) */
-    .bears{
-      position:relative;
-      width: 78%;
-      height: 62%;
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      gap:18px;
-    }
-    .bear{
-      width:46%;
-      height:100%;
-      border-radius: 26px;
-      position:relative;
-      box-shadow: 0 10px 22px rgba(0,0,0,.06);
-    }
-    .bear.b1{ background: #c08a6f; }
-    .bear.b2{ background: #fff; border: 1px solid rgba(0,0,0,.06); }
-
-    .ear{
+    .characters .bubble{
       position:absolute;
-      width:34px; height:34px;
-      border-radius: 999px;
-      top:-12px;
-      background: inherit;
-      box-shadow: inset 0 -6px 0 rgba(0,0,0,.05);
+      left:12px; top:12px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.08);
+      padding:8px 10px;
+      border-radius: 14px;
+      font-family:"Ubuntu", system-ui;
+      font-weight:700;
+      color: var(--ink);
+      font-size: 13px;
     }
-    .bear.b2 .ear{ border:1px solid rgba(0,0,0,.06); background:#fff; box-shadow:none; }
-    .bear .ear.e1{ left:18px; }
-    .bear .ear.e2{ right:18px; }
-
-    .face{
-      position:absolute;
-      inset:0;
-      display:grid;
-      place-items:center;
-      padding-top:30px;
-    }
-    .eyes{
-      display:flex; gap:14px;
-      margin-top:12px;
-    }
-    .eye{
-      width:9px; height:9px; border-radius: 99px;
-      background: rgba(0,0,0,.75);
-    }
-    .mouth{
-      width:28px; height:14px;
-      border: 3px solid rgba(0,0,0,.65);
-      border-top:0; border-left:0; border-right:0;
-      border-radius: 0 0 18px 18px;
-      margin-top:10px;
-      opacity:.9;
+    .characters .bubble b{
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      text-transform: uppercase;
+      letter-spacing:.3px;
     }
 
-    .cheek{
+    /* little floating hearts above them */
+    .top-hearts{
       position:absolute;
-      width:16px; height:10px;
-      border-radius: 999px;
-      background: rgba(255,42,91,.25);
-      top:54%;
-      filter: blur(.2px);
-    }
-    .bear.b2 .cheek{ background: rgba(255,42,91,.18); }
-    .bear .cheek.c1{ left:14%; }
-    .bear .cheek.c2{ right:14%; }
-
-    .hug{
-      position:absolute;
-      bottom:8%;
       left:50%;
-      transform:translateX(-50%);
-      width:64%;
-      height:24%;
-      border-radius: 999px;
-      background: rgba(255,255,255,.22);
-      border: 1px solid rgba(255,255,255,.24);
-      opacity:.55;
-    }
-
-    .hearts-top{
-      position:absolute;
-      top:10%;
-      left:50%;
+      top:16px;
       transform: translateX(-50%);
-      display:flex;
-      gap:10px;
+      display:flex; gap:10px;
       pointer-events:none;
+      opacity:.95;
     }
-    .h{
+    .ph{
       width:14px; height:14px;
       transform: rotate(45deg);
-      background: rgba(255,42,91,.8);
+      background: rgba(255,42,109,.85);
       border-radius: 3px;
       position:relative;
       animation: pop 1.6s ease-in-out infinite;
-      opacity:.85;
     }
-    .h::before,.h::after{
+    .ph::before,.ph::after{
       content:"";
       position:absolute;
       width:14px; height:14px;
       border-radius: 999px;
       background: inherit;
     }
-    .h::before{ left:-7px; top:0; }
-    .h::after{ left:0; top:-7px; }
-    .h:nth-child(2){ animation-delay:.25s; opacity:.7; transform: rotate(45deg) scale(.92); }
-    .h:nth-child(3){ animation-delay:.5s; opacity:.6; transform: rotate(45deg) scale(.85); }
+    .ph::before{ left:-7px; top:0; }
+    .ph::after{ left:0; top:-7px; }
+    .ph:nth-child(2){ animation-delay:.25s; opacity:.75; transform: rotate(45deg) scale(.92); }
+    .ph:nth-child(3){ animation-delay:.5s; opacity:.65; transform: rotate(45deg) scale(.85); }
     @keyframes pop{
       0%,100%{ transform: translateY(0) rotate(45deg) scale(1); }
       50%{ transform: translateY(-8px) rotate(45deg) scale(1.08); }
     }
 
-    /* floating hearts layer */
-    .float-layer{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:2;
-      overflow:hidden;
-    }
-    .float-heart{
-      position:absolute;
-      font-size: 18px;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,.25));
-      opacity:.85;
-      animation: rise linear forwards;
-      will-change: transform, opacity;
-      user-select:none;
-    }
-    @keyframes rise{
-      0%{ transform: translate3d(0, 30px, 0) scale(.9); opacity:0; }
-      10%{ opacity:.95; }
-      100%{ transform: translate3d(0, -110vh, 0) scale(1.2); opacity:0; }
-    }
-
-    /* game heart */
-    .catch{
-      position:absolute;
-      right:34px;
-      bottom:34px;
-      width: 66px;
-      height: 66px;
-      border-radius: 18px;
-      display:grid;
-      place-items:center;
-      background: rgba(255,255,255,.6);
-      border: 1px solid rgba(255,255,255,.7);
-      box-shadow: 0 14px 32px rgba(0,0,0,.10);
-      cursor:pointer;
-      user-select:none;
-      transform: translateZ(0);
-      transition: transform .12s ease;
-    }
-    .catch:active{ transform: scale(.98); }
-    .catch span{ font-size: 26px; }
-    .score{
-      position:absolute;
-      right:34px;
-      bottom:110px;
-      background: rgba(255,255,255,.55);
-      border: 1px solid rgba(255,255,255,.7);
+    /* ===== mini game HUD ===== */
+    .gamebar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 14px;
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
       color: var(--ink);
-      padding:8px 12px;
-      border-radius: 12px;
-      font-weight:800;
-      box-shadow: 0 12px 28px rgba(0,0,0,.08);
-      font-size: 13px;
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      font-weight:900;
+    }
+    .gamebar .score{
       display:flex;
       align-items:center;
       gap:8px;
     }
+    .gamebar .score b{ color: var(--neon2); }
 
-    /* modal */
+    /* catch heart button floats around */
+    .catch{
+      width: 62px;
+      height: 62px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 14px 30px rgba(0,0,0,.14);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease;
+    }
+    .catch:active{ transform: scale(.98); }
+    .catch span{ font-size: 26px; }
+
+    /* ===== modal ===== */
     .modal-backdrop{
       position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
+      background: rgba(0,0,0,.62);
       display:none;
       align-items:center;
       justify-content:center;
@@ -397,31 +425,31 @@
       padding:20px;
     }
     .modal{
-      width:min(720px, 96vw);
-      background: rgba(255, 214, 230, .98);
-      border-radius: 22px;
-      box-shadow: 0 26px 80px rgba(0,0,0,.45);
+      width:min(760px, 96vw);
+      background: linear-gradient(180deg, rgba(255,191,214,.98), rgba(255,159,198,.98));
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.45);
+      box-shadow: 0 28px 90px rgba(0,0,0,.55);
       overflow:hidden;
-      border: 1px solid rgba(255,255,255,.5);
       position:relative;
     }
     .modal header{
-      padding:18px 20px;
+      padding:14px 16px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      border-bottom: 1px solid rgba(26,16,32,.12);
-    }
-    .modal header strong{
+      border-bottom: 1px solid rgba(0,0,0,.10);
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      text-transform: uppercase;
+      letter-spacing:.4px;
       color: var(--ink);
-      font-size: 16px;
-      letter-spacing:.2px;
+      font-weight: 900;
     }
     .x{
       border:0;
-      background: rgba(255,255,255,.65);
-      border:1px solid rgba(255,255,255,.75);
+      background: rgba(255,255,255,.70);
+      border:1px solid rgba(0,0,0,.10);
       width:38px; height:38px;
       border-radius: 12px;
       cursor:pointer;
@@ -432,22 +460,23 @@
       place-items:center;
     }
     .modal .content{
-      padding:18px 20px 22px;
+      padding:16px;
       color: var(--ink);
       line-height:1.55;
+      font-family:"Ubuntu", system-ui;
     }
     .letter{
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(255,255,255,.75);
-      border-radius: 18px;
-      padding:16px 16px;
-      box-shadow: 0 14px 30px rgba(0,0,0,.08);
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 16px;
+      padding:14px 14px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.12);
     }
-    .letter p{ margin: 0 0 10px; }
+    .letter p{ margin:0 0 10px; }
     .letter p:last-child{ margin-bottom:0; }
 
     .qa{
-      margin-top:14px;
+      margin-top:12px;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -459,135 +488,221 @@
       box-shadow: 0 18px 40px rgba(17,168,107,.25);
     }
     .btn-no{
-      background: rgba(255,255,255,.65);
+      background: rgba(255,255,255,.70);
       color: var(--ink);
-      border:1px solid rgba(26,16,32,.12);
+      border:1px solid rgba(0,0,0,.10);
       position:relative;
     }
 
-    /* toast */
+    /* ===== toast ===== */
     .toast{
       position:fixed;
       left:50%;
       transform: translateX(-50%);
-      bottom:18px;
+      bottom:16px;
       padding:10px 14px;
       border-radius: 999px;
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(255,255,255,.8);
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.85);
       color: var(--ink);
-      font-weight:800;
-      box-shadow: 0 16px 44px rgba(0,0,0,.25);
+      font-family:"Intel One Mono", ui-monospace, monospace;
+      font-weight:900;
+      box-shadow: 0 18px 48px rgba(0,0,0,.35);
       z-index:60;
       display:none;
       gap:10px;
       align-items:center;
+      text-transform: uppercase;
+      letter-spacing:.35px;
     }
 
     /* responsive */
-    @media (max-width: 820px){
-      .card{
-        grid-template-columns: 1fr;
-        min-height: unset;
-      }
-      .right{ padding: 18px 20px 26px; }
-      .left{ padding: 30px 22px 16px; }
-      .score, .catch{
-        right: 16px;
-      }
-      .catch{ bottom: 16px; }
-      .score{ bottom: 92px; }
+    @media (max-width: 860px){
+      .screen{ grid-template-columns: 1fr; }
+      .frame{ min-height: unset; }
+      .characters{ max-width: 420px; }
     }
   </style>
 </head>
+
 <body>
-  <div class="bg-glow"></div>
   <div class="float-layer" id="floatLayer"></div>
+  <div class="vignette"></div>
+  <div class="crt"></div>
 
   <main class="wrap">
-    <section class="card" id="card">
-      <div class="left">
-        <div class="badge"><span class="dot"></span> Интерактивная валентинка</div>
+    <section class="frame" id="frame">
 
-        <h1 id="headline">Happy Valentine Day, Baby! 💍</h1>
-
-        <p class="sub" id="typed"></p>
-
-        <div class="actions">
-          <button class="btn btn-primary" id="openGifts">🎁 ОТКРЫТЬ ПОДАРКИ</button>
-          <button class="btn btn-ghost" id="toggleHearts">💖 Больше сердец</button>
-          <button class="btn btn-ghost" id="toggleSound" aria-pressed="false">🔈 Звук: выкл</button>
+      <div class="hud">
+        <div class="logo">
+          <span class="chip"></span>
+          <span>VALENTINE QUEST</span>
         </div>
 
-        <div class="hint">
-          <span class="kbd">Пробел</span> — конфетти
-          <span class="kbd">H</span> — сердечки
-          <span class="kbd">Esc</span> — закрыть
+        <div class="hud-right">
+          <div class="pill"><span class="dot"></span> MODE: <b>LOVE</b></div>
+          <div class="pill">PRESS <b>SPACE</b> = CONFETTI</div>
+          <div class="pill">PRESS <b>H</b> = HEARTS</div>
         </div>
       </div>
 
-      <div class="right">
-        <div class="mascot" aria-hidden="true">
-          <div class="hearts-top">
-            <i class="h"></i><i class="h"></i><i class="h"></i>
+      <div class="screen">
+        <!-- LEFT: text + controls (SEGA UI style) -->
+        <div class="panel left">
+          <h1 id="headline">HAPPY VALENTINE DAY, MY MAN 💘</h1>
+          <p class="sub" id="typed"></p>
+
+          <div class="actions">
+            <button class="btn btn-primary" id="openGifts">🎁 OPEN GIFTS</button>
+            <button class="btn btn-ghost" id="toggleHearts">💖 HEARTS: NORMAL</button>
+            <button class="btn btn-ghost" id="toggleSound" aria-pressed="false">🔈 SOUND: OFF</button>
           </div>
 
-          <div class="bears">
-            <div class="bear b1">
-              <div class="ear e1"></div><div class="ear e2"></div>
-              <div class="face">
-                <div class="eyes"><div class="eye"></div><div class="eye"></div></div>
-                <div class="mouth"></div>
-              </div>
-              <div class="cheek c1"></div><div class="cheek c2"></div>
-            </div>
-
-            <div class="bear b2">
-              <div class="ear e1"></div><div class="ear e2"></div>
-              <div class="face">
-                <div class="eyes"><div class="eye"></div><div class="eye"></div></div>
-                <div class="mouth"></div>
-              </div>
-              <div class="cheek c1"></div><div class="cheek c2"></div>
-            </div>
-
-            <div class="hug"></div>
+          <div class="hint">
+            <span class="kbd">SPACE</span> confetti
+            <span class="kbd">H</span> hearts
+            <span class="kbd">ESC</span> close
           </div>
         </div>
 
-        <div class="score" title="Мини-игра: нажимай на сердце">
-          🧡 Счёт: <span id="score">0</span>
+        <!-- RIGHT: Bubu & Dudu (drawn) + mini game -->
+        <div class="right">
+          <div class="panel charbox">
+            <div class="characters">
+              <div class="bubble"><b>BUBU</b> + <b>DUDU</b> = ❤️</div>
+
+              <div class="top-hearts">
+                <i class="ph"></i><i class="ph"></i><i class="ph"></i>
+              </div>
+
+              <!-- BUBU & DUDU SVG (cute, not SEGA) -->
+              <svg viewBox="0 0 400 400" width="100%" height="100%" aria-label="Bubu and Dudu">
+                <!-- background blush -->
+                <defs>
+                  <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity=".75"/>
+                    <stop offset="100%" stop-color="#ffd6e6" stop-opacity=".35"/>
+                  </radialGradient>
+                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".18"/>
+                  </filter>
+                </defs>
+                <rect x="0" y="0" width="400" height="400" rx="24" fill="url(#bg)"/>
+
+                <!-- little hearts -->
+                <g opacity=".9">
+                  <text x="230" y="90" font-size="22">💗</text>
+                  <text x="260" y="70" font-size="18">💖</text>
+                  <text x="205" y="65" font-size="16">💘</text>
+                </g>
+
+                <!-- Dudu (white) -->
+                <g filter="url(#softShadow)">
+                  <!-- head -->
+                  <circle cx="250" cy="180" r="78" fill="#ffffff" stroke="#2c2032" stroke-opacity=".08" stroke-width="3"/>
+                  <!-- ears -->
+                  <circle cx="200" cy="120" r="22" fill="#ffffff" stroke="#2c2032" stroke-opacity=".08" stroke-width="3"/>
+                  <circle cx="300" cy="120" r="22" fill="#ffffff" stroke="#2c2032" stroke-opacity=".08" stroke-width="3"/>
+                  <circle cx="200" cy="120" r="11" fill="#2c2032" opacity=".10"/>
+                  <circle cx="300" cy="120" r="11" fill="#2c2032" opacity=".10"/>
+                  <!-- face -->
+                  <circle cx="230" cy="175" r="6" fill="#1a1020"/>
+                  <circle cx="270" cy="175" r="6" fill="#1a1020"/>
+                  <path d="M245 190 q5 8 10 0" stroke="#1a1020" stroke-width="4" fill="none" stroke-linecap="round"/>
+                  <!-- blush -->
+                  <ellipse cx="215" cy="200" rx="18" ry="10" fill="#ff2a6d" opacity=".18"/>
+                  <ellipse cx="285" cy="200" rx="18" ry="10" fill="#ff2a6d" opacity=".18"/>
+                  <!-- body -->
+                  <path d="M205 245
+                           q45 -20 90 0
+                           q25 55 -10 100
+                           q-35 30 -70 0
+                           q-35 -45 -10 -100 z"
+                        fill="#ffffff" stroke="#2c2032" stroke-opacity=".06" stroke-width="3"/>
+                </g>
+
+                <!-- Bubu (brown) hugging -->
+                <g filter="url(#softShadow)">
+                  <!-- head -->
+                  <circle cx="160" cy="205" r="74" fill="#c28a6f" stroke="#1a1020" stroke-opacity=".10" stroke-width="3"/>
+                  <!-- ears -->
+                  <circle cx="115" cy="150" r="22" fill="#c28a6f" stroke="#1a1020" stroke-opacity=".10" stroke-width="3"/>
+                  <circle cx="205" cy="150" r="22" fill="#c28a6f" stroke="#1a1020" stroke-opacity=".10" stroke-width="3"/>
+                  <circle cx="115" cy="150" r="11" fill="#1a1020" opacity=".10"/>
+                  <circle cx="205" cy="150" r="11" fill="#1a1020" opacity=".10"/>
+                  <!-- face -->
+                  <circle cx="140" cy="205" r="6" fill="#1a1020"/>
+                  <circle cx="180" cy="205" r="6" fill="#1a1020"/>
+                  <path d="M155 220 q5 8 10 0" stroke="#1a1020" stroke-width="4" fill="none" stroke-linecap="round"/>
+                  <!-- blush -->
+                  <ellipse cx="125" cy="235" rx="18" ry="10" fill="#ff2a6d" opacity=".16"/>
+                  <ellipse cx="195" cy="235" rx="18" ry="10" fill="#ff2a6d" opacity=".16"/>
+                  <!-- body -->
+                  <path d="M115 270
+                           q45 -25 90 0
+                           q30 55 -5 95
+                           q-35 32 -75 0
+                           q-35 -45 -10 -95 z"
+                        fill="#c28a6f" stroke="#1a1020" stroke-opacity=".06" stroke-width="3"/>
+                  <!-- arms hug -->
+                  <path d="M185 288
+                           q55 10 70 50
+                           q-12 12 -28 8
+                           q-18 -26 -55 -30 z"
+                        fill="#c28a6f" opacity=".98"/>
+                  <path d="M210 295
+                           q35 12 45 35
+                           q-10 10 -22 6
+                           q-12 -18 -33 -22 z"
+                        fill="#c28a6f" opacity=".98"/>
+                </g>
+
+                <!-- ground -->
+                <ellipse cx="205" cy="370" rx="150" ry="20" fill="#1a1020" opacity=".08"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="gamebar">
+            <div class="score">🧡 SCORE: <b id="score">0</b></div>
+            <div>CLICK 💘 TO CATCH</div>
+          </div>
+
+          <button class="catch" id="catchBtn" title="Поймай сердечко!">
+            <span>💘</span>
+          </button>
         </div>
-        <button class="catch" id="catchBtn" title="Поймай сердечко!">
-          <span>💘</span>
-        </button>
       </div>
     </section>
   </main>
 
-  <!-- modal -->
+  <!-- MODAL -->
   <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
       <header>
-        <strong id="modalTitle">Твое письмо 💌</strong>
+        <span id="modalTitle">LOVE LETTER</span>
         <button class="x" id="closeModal" aria-label="Закрыть">×</button>
       </header>
+
       <div class="content">
         <div class="letter" id="letter">
-          <p><b>Привет, любимая.</b></p>
+          <p><b>Любимый,</b></p>
           <p>
-            Это маленькая штука в интернете, но смысл простой: ты — тот самый человек, из-за которого
-            мир становится мягче, теплее и спокойнее.
+            мне нравится в тебе то, что редко бывает в людях: спокойная сила, надёжность и чувство,
+            что рядом — мой человек.
           </p>
           <p>
-            Сегодня я выбираю тебя снова. И завтра тоже. ❤️
+            Я не хочу “красивых слов ради слов”. Я хочу тебя — рядом, по-настоящему, каждый день.
+            И да, я выбираю тебя. ❤️
           </p>
-          <p style="opacity:.75;margin-top:10px">P.S. Поймай ещё пару сердец — будет сюрприз.</p>
+          <p style="opacity:.75;margin-top:10px">
+            P.S. Поймай несколько сердец — откроется сюрприз.
+          </p>
         </div>
 
         <div class="qa">
-          <button class="btn btn-primary btn-yes" id="yesBtn">Да, я твоя 💚</button>
-          <button class="btn btn-no" id="noBtn">Эээ… нет 🙃</button>
+          <button class="btn btn-primary btn-yes" id="yesBtn">ДА, Я ТВОЯ 💚</button>
+          <button class="btn btn-no" id="noBtn">НЕТ 🙃</button>
         </div>
       </div>
     </div>
@@ -596,30 +711,33 @@
   <div class="toast" id="toast">✨</div>
 
   <script>
-    // ====== CUSTOMIZE TEXT HERE ======
+    // =======================
+    //   TEXT (female -> boyfriend)
+    // =======================
     const CONFIG = {
-      headline: "Happy Valentine Day, Baby! 💍",
+      headline: "HAPPY VALENTINE DAY, MY MAN 💘",
       typedText:
-        "Каждая секунда с тобой — это праздник. Ты — искра, от которой мой мир становится ярче. " +
-        "Нажми «ОТКРЫТЬ ПОДАРКИ», а потом поймай сердечки 💘",
-      signatureUnlockScore: 7, // how many hearts to catch for the “surprise”
+        "С тобой я чувствую себя спокойно и по-настоящему любимой. " +
+        "Ты — моя опора, мой мужчина и мой самый тёплый выбор. " +
+        "Нажми «OPEN GIFTS» — и не делай вид, что ты не улыбаешься 😌",
+      unlockScore: 7, // hearts to unlock surprise
     };
 
     // ====== Helpers ======
     const $ = (sel, el=document) => el.querySelector(sel);
     const rand = (a,b)=>Math.random()*(b-a)+a;
 
-    // ====== Typing effect ======
-    const typedEl = $("#typed");
+    // ====== Apply headline + typing effect ======
     const headlineEl = $("#headline");
+    const typedEl = $("#typed");
     headlineEl.textContent = CONFIG.headline;
 
-    let i = 0;
+    let ti = 0;
     function typeTick(){
       const s = CONFIG.typedText;
-      typedEl.textContent = s.slice(0, i);
-      i = Math.min(s.length, i + 2);
-      if(i < s.length) requestAnimationFrame(typeTick);
+      typedEl.textContent = s.slice(0, ti);
+      ti = Math.min(s.length, ti + 2);
+      if(ti < s.length) requestAnimationFrame(typeTick);
     }
     typeTick();
 
@@ -661,20 +779,22 @@
     }
     startHearts();
 
-    $("#toggleHearts").addEventListener("click", ()=>{
+    const toggleHeartsBtn = $("#toggleHearts");
+    toggleHeartsBtn.addEventListener("click", ()=>{
       heartsBoost = !heartsBoost;
-      toast(heartsBoost ? "💖 Сердечки: МАКС" : "💗 Сердечки: норм");
+      toggleHeartsBtn.textContent = heartsBoost ? "💖 HEARTS: MAX" : "💖 HEARTS: NORMAL";
+      toast(heartsBoost ? "HEARTS MAX" : "HEARTS NORMAL");
       stopHearts(); startHearts();
     });
 
-    // ====== Confetti (pure JS) ======
-    function confettiBurst(count=120){
+    // ====== Confetti (pure JS canvas) ======
+    function confettiBurst(count=140){
       const c = document.createElement("canvas");
       c.width = innerWidth;
       c.height = innerHeight;
       c.style.position = "fixed";
       c.style.inset = "0";
-      c.style.zIndex = "40";
+      c.style.zIndex = "45";
       c.style.pointerEvents = "none";
       document.body.appendChild(c);
 
@@ -692,7 +812,7 @@
       }));
 
       let t = 0;
-      const maxT = 200;
+      const maxT = 210;
 
       function frame(){
         t++;
@@ -725,8 +845,9 @@
     const backdrop = $("#backdrop");
     function openModal(){
       backdrop.style.display = "flex";
-      confettiBurst(140);
-      toast("🎁 Открыто!");
+      confettiBurst(180);
+      toast("OPENED");
+      playWin();
     }
     function closeModal(){
       backdrop.style.display = "none";
@@ -744,45 +865,40 @@
     const catchBtn = $("#catchBtn");
 
     function moveCatch(){
-      const card = $("#card");
-      const rect = card.getBoundingClientRect();
-      const pad = 18;
-
-      // move within the card area (right side-ish) but still visible
-      const x = rand(rect.left + rect.width*0.55, rect.right - 90);
-      const y = rand(rect.top + 110, rect.bottom - 90);
+      const frame = $("#frame");
+      const rect = frame.getBoundingClientRect();
+      const x = rand(rect.left + rect.width*0.62, rect.right - 90);
+      const y = rand(rect.top + 120, rect.bottom - 90);
 
       catchBtn.style.position = "fixed";
       catchBtn.style.left = Math.min(innerWidth - 90, Math.max(10, x)) + "px";
       catchBtn.style.top  = Math.min(innerHeight - 90, Math.max(10, y)) + "px";
     }
-    // initial placement for desktop
-    setTimeout(()=> moveCatch(), 400);
+    setTimeout(()=> moveCatch(), 450);
 
     catchBtn.addEventListener("click", ()=>{
       score++;
       scoreEl.textContent = score;
       spawnHeart();
-      confettiBurst(50);
+      confettiBurst(55);
       playPop();
       moveCatch();
 
-      if(score === CONFIG.signatureUnlockScore){
-        // Surprise: update letter
+      if(score === CONFIG.unlockScore){
         $("#letter").innerHTML = `
-          <p><b>Сюрприз разблокирован ✅</b></p>
-          <p>Ты поймала ${CONFIG.signatureUnlockScore} сердец. Значит, сегодня официальный праздник: <b>День “Ты — моя удача”</b>.</p>
-          <p>И да: я люблю тебя. Сильно. Без условий. ❤️</p>
+          <p><b>СЮРПРИЗ РАЗБЛОКИРОВАН ✅</b></p>
+          <p>Ты поймал <b>${CONFIG.unlockScore}</b> сердец. Значит всё честно: сегодня мой официальный праздник — <b>день “мой мужчина”</b>.</p>
+          <p>Я люблю тебя. Не “когда удобно”, а по-настоящему. ❤️</p>
         `;
-        toast("🔓 Сюрприз!");
         openModal();
+        toast("UNLOCKED");
       }
     });
 
     // ====== Yes / No buttons ======
     $("#yesBtn").addEventListener("click", ()=>{
-      confettiBurst(220);
-      toast("💚 YES! (ну всё, ты попала 😄)");
+      confettiBurst(240);
+      toast("YES 💚");
       playWin();
     });
 
@@ -791,15 +907,14 @@
     noBtn.addEventListener("click", dodgeNo);
 
     function dodgeNo(){
-      // move inside modal area
       const modal = $(".modal");
       const r = modal.getBoundingClientRect();
-      const x = rand(r.left + 14, r.right - 120);
+      const x = rand(r.left + 14, r.right - 130);
       const y = rand(r.top + 70, r.bottom - 70);
       noBtn.style.position = "fixed";
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
-      toast("🙃 Не-а.");
+      toast("NOPE 🙃");
       playPop();
     }
 
@@ -810,7 +925,7 @@
       toastEl.textContent = text;
       toastEl.style.display = "flex";
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(()=> toastEl.style.display="none", 1800);
+      toastTimer = setTimeout(()=> toastEl.style.display="none", 1600);
     }
 
     // ====== Keyboard shortcuts ======
@@ -818,26 +933,27 @@
       if(e.key === "Escape") closeModal();
       if(e.key === " "){
         e.preventDefault();
-        confettiBurst(140);
-        toast("✨ Бум!");
+        confettiBurst(160);
+        toast("BOOM ✨");
         playWin();
       }
       if(e.key.toLowerCase() === "h"){
         heartsBoost = !heartsBoost;
+        toggleHeartsBtn.textContent = heartsBoost ? "💖 HEARTS: MAX" : "💖 HEARTS: NORMAL";
         stopHearts(); startHearts();
-        toast(heartsBoost ? "💖 Сердечки: МАКС" : "💗 Сердечки: норм");
+        toast(heartsBoost ? "HEARTS MAX" : "HEARTS NORMAL");
       }
     });
 
-    // ====== Optional: tiny sound (WebAudio, no files needed) ======
+    // ====== Optional sound (WebAudio, no files) ======
     let soundOn = false;
     let audioCtx = null;
 
     $("#toggleSound").addEventListener("click", ()=>{
       soundOn = !soundOn;
       $("#toggleSound").setAttribute("aria-pressed", String(soundOn));
-      $("#toggleSound").textContent = soundOn ? "🔊 Звук: вкл" : "🔈 Звук: выкл";
-      toast(soundOn ? "🔊 Звук включён" : "🔈 Звук выключен");
+      $("#toggleSound").textContent = soundOn ? "🔊 SOUND: ON" : "🔈 SOUND: OFF";
+      toast(soundOn ? "SOUND ON" : "SOUND OFF");
       if(soundOn) ensureAudio();
     });
 
@@ -848,7 +964,7 @@
       if(audioCtx.state === "suspended") audioCtx.resume();
     }
 
-    function beep(freq=440, dur=0.08, type="sine", gain=0.03){
+    function beep(freq=440, dur=0.08, type="square", gain=0.03){
       if(!soundOn) return;
       ensureAudio();
       const o = audioCtx.createOscillator();
@@ -861,19 +977,16 @@
       o.stop(audioCtx.currentTime + dur);
     }
     function playPop(){
-      beep(740, 0.06, "triangle", 0.03);
-      beep(980, 0.05, "triangle", 0.02);
+      beep(784, 0.055, "square", 0.03);
+      beep(988, 0.05, "square", 0.02);
     }
     function playWin(){
-      beep(523.25, 0.07, "sine", 0.03);
-      beep(659.25, 0.07, "sine", 0.03);
-      beep(783.99, 0.10, "sine", 0.03);
+      beep(523.25, 0.07, "square", 0.03);
+      beep(659.25, 0.07, "square", 0.03);
+      beep(783.99, 0.10, "square", 0.03);
     }
 
-    // keep canvas / elements aligned on resize
-    window.addEventListener("resize", ()=>{
-      moveCatch();
-    });
+    window.addEventListener("resize", ()=> moveCatch());
   </script>
 </body>
 </html>
